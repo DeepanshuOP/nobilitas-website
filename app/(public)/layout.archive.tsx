@@ -10,7 +10,7 @@ export default function PublicLayout({ children }: PublicLayoutProps) {
   return (
     <>
       <Header />
-      <main style={{ background: '#f5f1ea', minHeight: '100vh' }}>
+      <main style={{ background: '#0f0f0f', minHeight: '100vh' }}>
         {children}
       </main>
       <Footer />

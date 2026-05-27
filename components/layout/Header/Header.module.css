@@ -1,0 +1,234 @@
+/* ============================================================
+   HEADER — sticky, transparent over hero, frosted when scrolled
+   ============================================================ */
+
+.siteHeader {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 24px 0;
+  transition:
+    background 360ms var(--ease-out),
+    backdrop-filter 360ms var(--ease-out),
+    padding 360ms var(--ease-out),
+    border-color 360ms var(--ease-out);
+  border-bottom: 1px solid transparent;
+  color: var(--fg-1);
+}
+
+/* Over hero — transparent, cream text */
+.siteHeader.overHero {
+  color: var(--cream-light);
+  background: transparent;
+}
+
+/* Scrolled — frosted glass */
+.siteHeader.scrolled {
+  background: rgba(239, 233, 221, 0.85);
+  backdrop-filter: blur(16px) saturate(1.1);
+  -webkit-backdrop-filter: blur(16px) saturate(1.1);
+  padding: 14px 0;
+  border-bottom-color: var(--border-light);
+  color: var(--fg-1);
+}
+
+/* ── Brand ────────────────────────────────────────────────── */
+.headerInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brandMark {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  position: relative;
+}
+.brandMark::before,
+.brandMark::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--gold);
+  transform: rotate(45deg);
+  border-radius: 1px;
+}
+.brandMark::after {
+  inset: 6px;
+  opacity: 0.85;
+}
+.brandMark span {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--gold);
+}
+
+.brandText {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+  color: inherit;
+}
+.brandText strong {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 22px;
+  letter-spacing: 0.04em;
+  color: inherit;
+}
+.brandText small {
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 9px;
+  letter-spacing: 0.34em;
+  color: currentColor;
+  opacity: 0.65;
+  margin-top: 4px;
+  text-transform: uppercase;
+}
+
+/* ── Nav ──────────────────────────────────────────────────── */
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+.nav a {
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: inherit;
+  position: relative;
+  padding: 4px 0;
+  transition: color 240ms var(--ease-out);
+  opacity: 0.88;
+}
+.nav a::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 320ms var(--ease-out);
+}
+.nav a:hover, .nav a.active { opacity: 1; }
+.nav a:hover::after, .nav a.active::after { transform: scaleX(1); }
+.nav a.active { color: var(--gold); }
+
+/* ── Header CTA ───────────────────────────────────────────── */
+.headerCta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.headerCta .btn {
+  padding: 12px 22px;
+  font-size: 11px;
+}
+
+/* When over hero, the outline-dark button adapts */
+.siteHeader.overHero .ctaBtn {
+  border-color: rgba(239, 233, 221, 0.4);
+  color: var(--cream-light);
+}
+.siteHeader.overHero .ctaBtn:hover {
+  background: var(--cream-light);
+  color: var(--onyx);
+  border-color: var(--cream-light);
+}
+
+/* ── Mobile nav toggle ────────────────────────────────────── */
+.navToggle {
+  display: none;
+  width: 44px;
+  height: 44px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+  opacity: 0.6;
+}
+.navToggle:hover { opacity: 1; }
+.navToggle svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  fill: none;
+}
+
+/* ── Mobile nav drawer ────────────────────────────────────── */
+.mobileNav {
+  position: fixed;
+  top: 0; right: 0; bottom: 0;
+  width: min(420px, 90vw);
+  background: var(--cream-lighter);
+  z-index: 200;
+  padding: 96px 48px 48px;
+  transform: translateX(100%);
+  transition: transform 480ms var(--ease-out);
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+.mobileNav.open { transform: translateX(0); }
+.mobileNav a {
+  font-family: var(--serif);
+  font-size: 32px;
+  color: var(--fg-1);
+  text-transform: lowercase;
+}
+.mobileNav a:hover { color: var(--gold); }
+
+.mobileNavClose {
+  position: absolute;
+  top: 28px; right: 28px;
+  width: 44px; height: 44px;
+  display: grid;
+  place-items: center;
+}
+.mobileNavClose svg {
+  width: 20px;
+  height: 20px;
+  stroke: var(--fg-1);
+  fill: none;
+}
+
+/* ── Backdrop ─────────────────────────────────────────────── */
+.navBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(26, 22, 18, 0.5);
+  z-index: 150;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 360ms var(--ease-out);
+}
+.navBackdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 860px) {
+  .nav, .headerCta { display: none; }
+  .navToggle { display: flex; }
+}

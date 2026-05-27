@@ -1,48 +1,53 @@
 import type { Metadata } from 'next';
+import { Playfair_Display, Inter, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
+import Header from '@/components/layout/Header/Header';
+import Footer from '@/components/layout/Footer/Footer';
+import WhatsAppFab from '@/components/layout/WhatsAppFab/WhatsAppFab';
 
-// ─── Site metadata ────────────────────────────────────────────────────────────
+/* ── Fonts ───────────────────────────────────────────────────────────────── */
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  style: ['normal', 'italic'],
+  variable: '--font-serif',
+  display: 'swap',
+});
+
+const inter = Inter({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-sans',
+  display: 'swap',
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  weight: ['400', '500'],
+  variable: '--font-mono',
+  display: 'swap',
+});
+
+/* ── Metadata ────────────────────────────────────────────────────────────── */
 export const metadata: Metadata = {
-  title: {
-    default:  'Nobilitas Ventures — B2B Supplies, Jaipur',
-    template: '%s | Nobilitas Ventures',
-  },
+  title: "Nobilitas — Equipping India's finest workplaces",
   description:
-    'Nobilitas Ventures is a trusted single-source B2B supplier of cleaning, office, hospitality, and industrial supplies based in Jaipur, India. Request a quote today.',
-  keywords: [
-    'B2B supplies India',
-    'office supplies Jaipur',
-    'cleaning products wholesale',
-    'hospitality supplies',
-    'Nobilitas Ventures',
-  ],
-  authors: [{ name: 'Nobilitas Ventures LLP' }],
-  openGraph: {
-    type:        'website',
-    locale:      'en_IN',
-    url:         'https://nobilitasventures.com',
-    siteName:    'Nobilitas Ventures',
-    title:       'Nobilitas Ventures — B2B Supplies, Jaipur',
-    description: 'A trusted single-source supplier for offices, hotels, hospitals & factories.',
-  },
+    'A single trusted B2B supplier for cleaning, office furniture, electronics, pantry, gifts, and more. Pan-India delivery from Jaipur. Quote within four working hours.',
+  keywords: ['B2B supplier', 'office supplies', 'cleaning', 'Jaipur', 'corporate procurement'],
 };
 
-// ─── Root layout ─────────────────────────────────────────────────────────────
-export default function RootLayout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
+/* ── Root layout ─────────────────────────────────────────────────────────── */
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
-          rel="stylesheet"
-        />
-      </head>
-      <body style={{ margin: 0, padding: 0 }}>
+    <html
+      lang="en"
+      className={`${playfair.variable} ${inter.variable} ${jetbrainsMono.variable}`}
+    >
+      <body>
+        <Header />
         {children}
+        <Footer />
+        <WhatsAppFab />
       </body>
     </html>
   );

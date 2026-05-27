@@ -1,0 +1,14 @@
+// Browser client — use in Client Components ('use client')
+import { createBrowserClient } from '@supabase/ssr';
+
+/**
+ * Creates a browser-side Supabase client.
+ * Next.js App Router handles caching and singletons properly per-render,
+ * so we do not use a custom singleton pattern.
+ */
+export function createClient() {
+  return createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
+}

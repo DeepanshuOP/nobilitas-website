@@ -1,0 +1,122 @@
+.testimonials {
+  background: var(--cream);
+  border-top: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.testimonialsHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 40px;
+  flex-wrap: wrap;
+  margin-bottom: 80px;
+}
+.testimonialsHead .left :global(.h-section) { margin-top: 28px; }
+
+.testiNav { display: flex; gap: 10px; }
+.testiNav button {
+  width: 56px; height: 56px;
+  border: 1px solid var(--border-mid);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  transition: all 280ms var(--ease-out);
+  background: transparent;
+}
+.testiNav button:hover { background: var(--onyx); border-color: var(--onyx); }
+.testiNav button:hover svg { stroke: var(--cream-light); }
+.testiNav svg {
+  width: 16px; height: 16px;
+  stroke: var(--fg-1);
+  fill: none;
+  transition: stroke 280ms var(--ease-out);
+}
+
+.testiViewport { overflow: hidden; }
+.testiTrack {
+  display: flex;
+  transition: transform 720ms var(--ease-luxe);
+}
+.testiSlide {
+  flex: 0 0 100%;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: clamp(40px, 6vw, 96px);
+  align-items: center;
+}
+.testiPhoto {
+  aspect-ratio: 4 / 5;
+  border-radius: 6px;
+  background-size: cover;
+  background-position: center;
+  max-width: 360px;
+  position: relative;
+}
+.testiPhoto::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 50%, rgba(26,22,18,0.4) 100%);
+  border-radius: 6px;
+}
+.quoteMark {
+  position: absolute;
+  top: 20px; left: 24px;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 80px;
+  line-height: 1;
+  color: var(--cream-light);
+  z-index: 2;
+  opacity: 0.95;
+}
+.testiBody { display: flex; flex-direction: column; gap: 32px; }
+.testiQuote {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(24px, 2.6vw, 36px);
+  line-height: 1.32;
+  color: var(--fg-1);
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+.testiAttrib {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-family: var(--sans);
+}
+.testiAttrib .line { width: 36px; height: 1px; background: var(--gold); }
+.testiAttrib .name {
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  color: var(--fg-1);
+}
+.testiAttrib .role {
+  font-weight: 400;
+  font-size: 13px;
+  color: var(--fg-3);
+}
+
+.testiDots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 64px;
+}
+.testiDots button {
+  width: 32px;
+  height: 2px;
+  background: var(--border-mid);
+  border-radius: 1px;
+  transition: background 280ms var(--ease-out), width 360ms var(--ease-out);
+}
+.testiDots button.active { background: var(--onyx); width: 64px; }
+
+@media (max-width: 980px) {
+  .testiSlide { grid-template-columns: 1fr; }
+  .testiPhoto { max-width: 240px; aspect-ratio: 1; border-radius: 50%; }
+  .testimonialsHead { gap: 24px; }
+}

@@ -1,0 +1,64 @@
+.cta {
+  background: var(--onyx);
+  color: var(--cream-light);
+  position: relative;
+  overflow: hidden;
+  padding: clamp(80px, 11vw, 168px) 0;
+}
+.ctaInner {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  gap: clamp(24px, 4vw, 64px);
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+.ctaPhoto {
+  aspect-ratio: 3 / 4;
+  border-radius: 6px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  overflow: hidden;
+}
+.ctaPhoto::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(26,22,18,0.15) 0%, transparent 40%, rgba(26,22,18,0.45) 100%);
+}
+.ctaPhotoLeft  { background-image: url('/ref/cta-picture.avif'); }
+.ctaPhotoRight { background-image: url('/ref/cta-2.avif'); }
+.tag {
+  position: absolute;
+  bottom: 18px; left: 20px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(239,233,221,0.85);
+  z-index: 1;
+}
+.ctaContent { text-align: center; }
+.ctaContent :global(.h-section) { color: var(--cream-light); margin: 28px 0 0; }
+.ctaContent :global(.h-section) em { color: var(--gold); }
+.ctaContent :global(.lede) { color: var(--fg-on-dark-2); margin: 32px auto 44px; max-width: 540px; }
+.ctaContent :global(.eyebrow) { color: rgba(239,233,221,0.7); }
+.ctaContent :global(.eyebrow)::before { background: var(--gold); }
+
+.ctaButtons {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.ctaDivider {
+  width: 1px; height: 64px;
+  background: var(--border-on-dark-gold);
+  margin: 36px auto 0;
+}
+
+@media (max-width: 980px) {
+  .ctaInner { grid-template-columns: 1fr; }
+  .ctaPhoto { display: none; }
+}
