@@ -80,6 +80,32 @@
   display: none;
 }
 
+.galleryArrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(245,241,234,0.85);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(26,22,18,0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 240ms var(--ease-out);
+  z-index: 2;
+}
+
+.galleryArrow:hover {
+  background: #f5f1ea;
+  border-color: rgba(26,22,18,0.28);
+}
+
+.galleryArrowLeft { left: 12px; }
+.galleryArrowRight { right: 12px; }
+
 .skuTag {
   position: absolute;
   top: 14px;

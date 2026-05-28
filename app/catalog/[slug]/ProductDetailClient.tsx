@@ -123,6 +123,37 @@ export default function ProductDetailClient({ product, relatedProducts, images }
                 <CategoryIcon name={iconName} dark={isMainDark} />
               </div>
             )}
+            
+            {images.length >= 2 && (
+              <>
+                <button
+                  type="button"
+                  className={`${styles.galleryArrow} ${styles.galleryArrowLeft}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setActiveThumb(prev => prev === 0 ? images.length - 1 : prev - 1);
+                  }}
+                  aria-label="Previous image"
+                >
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--fg-1)" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M15 6l-6 6 6 6"/>
+                  </svg>
+                </button>
+                <button
+                  type="button"
+                  className={`${styles.galleryArrow} ${styles.galleryArrowRight}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setActiveThumb(prev => prev === images.length - 1 ? 0 : prev + 1);
+                  }}
+                  aria-label="Next image"
+                >
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--fg-1)" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M9 6l6 6-6 6"/>
+                  </svg>
+                </button>
+              </>
+            )}
           </div>
           
           {images.length > 1 && (
