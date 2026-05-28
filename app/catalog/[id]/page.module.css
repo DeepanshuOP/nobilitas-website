@@ -1,0 +1,538 @@
+/* ============================================================
+   NOBILITAS — Product Detail Page
+   ============================================================ */
+
+.container {
+  max-width: 1380px;
+  padding: 0 var(--gutter);
+  margin: 0 auto;
+}
+
+/* ── Breadcrumb ───────────────────────────────────────────── */
+.breadcrumb {
+  padding: 32px 0 0;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.breadcrumb a {
+  text-decoration: none;
+  transition: color 200ms ease;
+}
+
+.breadcrumb a:hover {
+  color: var(--fg-1);
+}
+
+.bcSep {
+  color: var(--gold);
+}
+
+.bcCurrentCat {
+  color: var(--fg-1);
+}
+
+.bcCurrentName {
+  color: var(--fg-1);
+  text-transform: lowercase;
+}
+
+/* ── Main Grid ────────────────────────────────────────────── */
+.mainGrid {
+  padding: 48px 0 160px;
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: clamp(48px, 7vw, 96px);
+  align-items: start;
+}
+
+/* ── Image Gallery ────────────────────────────────────────── */
+.gallery {
+  display: flex;
+  flex-direction: column;
+}
+
+.mainImage {
+  aspect-ratio: 1.1;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid var(--border-light);
+  position: relative;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.skuTag {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--fg-2);
+  background: rgba(245, 241, 234, 0.78);
+  backdrop-filter: blur(6px);
+  padding: 5px 9px;
+  border-radius: 2px;
+  z-index: 2;
+}
+
+.thumbnails {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+}
+
+.thumb {
+  aspect-ratio: 1;
+  border-radius: 4px;
+  border: 1px solid var(--border-light);
+  cursor: pointer;
+  overflow: hidden;
+  transition: border-color 200ms ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.thumbActive {
+  border-color: var(--fg-1);
+}
+
+/* Placeholder styles (reused from catalog) */
+.jaliOverlay {
+  position: absolute;
+  inset: 0;
+  opacity: 0.12;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0l20 20-20 20L0 20z' fill='%23000' fill-opacity='1' fill-rule='evenodd'/%3E%3C/svg%3E");
+  background-size: 12px;
+}
+
+.centerIcon {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toneWarm { background: linear-gradient(135deg, #f0e3cc, #d8c5a0); }
+.toneDeep { background: linear-gradient(135deg, #ddd3bd, #c9c0a8); }
+.toneCocoa { background: linear-gradient(135deg, #c9b69c, #a89373); }
+.toneSage { background: linear-gradient(135deg, #d9dccf, #b8c0ad); }
+.toneDefault { background: linear-gradient(135deg, #ece5d7, #ddd3bd); }
+
+/* ── Product Info ─────────────────────────────────────────── */
+.info {
+  display: flex;
+  flex-direction: column;
+}
+
+.sectionLabel {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--fg-3);
+  text-transform: uppercase;
+}
+
+.title {
+  font-family: var(--serif);
+  font-size: clamp(32px, 4vw, 52px);
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  color: var(--fg-1);
+  text-transform: lowercase;
+  margin: 28px 0 16px;
+}
+
+.badgesRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+
+.badge {
+  font-family: var(--sans);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 5px 10px;
+  border-radius: 2px;
+}
+
+.badgeSolid {
+  background: var(--gold);
+  color: var(--fg-1);
+}
+
+.badgeOutline {
+  background: rgba(201, 169, 110, 0.12);
+  color: var(--gold);
+  border: 1px solid rgba(201, 169, 110, 0.32);
+}
+
+.badgeInquiry {
+  background: var(--cream-lighter);
+  color: var(--fg-2);
+  border: 1px solid var(--border-mid);
+}
+
+.badgeSupplier {
+  background: transparent;
+  color: var(--fg-3);
+  border: 1px solid var(--border-mid);
+}
+
+.brand {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  margin-bottom: 20px;
+}
+
+.description {
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 1.75;
+  color: var(--fg-2);
+  max-width: 520px;
+  margin-bottom: 32px;
+}
+
+/* ── Specs Quick-grid ─────────────────────────────────────── */
+.specsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 24px;
+  padding: 24px 0;
+  border-top: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-light);
+  margin-bottom: 32px;
+}
+
+.specItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.specLabel {
+  font-family: var(--sans);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--fg-3);
+}
+
+.specValue {
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 13px;
+  color: var(--fg-1);
+}
+
+.specValueMono {
+  font-family: var(--mono);
+  font-weight: 400;
+}
+
+/* ── CTA & Fine Print ─────────────────────────────────────── */
+.ctaWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.btnFull {
+  justify-content: center;
+  width: 100%;
+}
+
+.finePrint {
+  font-family: var(--sans);
+  font-size: 12px;
+  color: var(--fg-3);
+  text-align: center;
+}
+
+/* ── Tabs Section ─────────────────────────────────────────── */
+.tabsSection {
+  margin-top: 80px;
+  border-top: 1px solid var(--border-light);
+  padding-top: 48px;
+}
+
+.tabBar {
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  border-bottom: 1px solid var(--border-light);
+  margin-bottom: 40px;
+}
+
+.tabBtn {
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 13px;
+  padding: 14px 0;
+  margin-right: 32px;
+  color: var(--fg-3);
+  border-bottom: 1px solid transparent;
+  transition: all 240ms ease;
+  background: none;
+  cursor: pointer;
+}
+
+.tabBtnActive {
+  color: var(--fg-1);
+  border-bottom-color: var(--fg-1);
+}
+
+/* Tab Content */
+.tabRow {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-light);
+  padding: 16px 0;
+}
+
+.tabRowLabel {
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--fg-2);
+}
+
+.tabRowValue {
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 13px;
+  color: var(--fg-1);
+}
+
+.tabText {
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--fg-2);
+}
+
+.tabTextTop {
+  margin-bottom: 24px;
+}
+
+.tabTextBottom {
+  margin-top: 24px;
+}
+
+.certWrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.certBadge {
+  font-family: var(--sans);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border-mid);
+  color: var(--fg-1);
+  background: transparent;
+}
+
+/* ── Related Products ─────────────────────────────────────── */
+.relatedSection {
+  margin-top: 80px;
+  border-top: 1px solid var(--border-light);
+  padding-top: 64px;
+}
+
+.relatedTitle {
+  font-family: var(--serif);
+  font-size: clamp(28px, 3.5vw, 40px);
+  text-transform: lowercase;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  margin: 16px 0 48px;
+  color: var(--fg-1);
+}
+
+.relatedTitle em {
+  font-style: italic;
+  color: var(--gold);
+}
+
+.relatedGrid {
+  display: grid;
+  gap: 24px;
+}
+
+.noRelated {
+  color: var(--fg-3);
+  font-size: 14px;
+}
+
+.noRelated a {
+  text-decoration: underline;
+  transition: color 200ms ease;
+}
+
+.noRelated a:hover {
+  color: var(--fg-1);
+}
+
+/* ── Not Found ────────────────────────────────────────────── */
+.notFound {
+  padding: 160px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  text-align: center;
+}
+
+/* ── Product Card (reused layout from catalog) ─────────────── */
+.productCard {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-decoration: none;
+  group: hover;
+}
+
+.productImg {
+  position: relative;
+  aspect-ratio: 1;
+  background-color: var(--ivory-sand);
+  border: 1px solid var(--border-light);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.productCard:hover .productImg {
+  border-color: var(--border-mid);
+}
+
+.sku {
+  position: absolute;
+  top: 12px; left: 12px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  color: var(--fg-3);
+  z-index: 2;
+}
+
+.cardBadge {
+  position: absolute;
+  top: 12px; right: 12px;
+  font-family: var(--sans);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  background: var(--gold);
+  color: var(--fg-1);
+  padding: 4px 8px;
+  border-radius: 2px;
+  z-index: 2;
+}
+
+.cardBadgeMuted {
+  background: rgba(201, 169, 110, 0.12);
+  color: var(--gold);
+  border: 1px solid rgba(201, 169, 110, 0.32);
+}
+
+.productMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.productCat {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--fg-3);
+  text-transform: uppercase;
+}
+
+.productName {
+  font-family: var(--sans);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--fg-1);
+  margin: 0;
+}
+
+.productAvail {
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--fg-2);
+  margin: 4px 0 12px;
+}
+
+.productFoot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-top: 1px solid var(--border-light);
+  padding-top: 12px;
+}
+
+.view {
+  color: var(--fg-1);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.view .arrow {
+  transition: transform 240ms ease;
+}
+
+.productCard:hover .arrow {
+  transform: translateX(4px);
+}
+
+.inq {
+  color: var(--gold);
+}
+
+@media (max-width: 860px) {
+  .mainGrid {
+    grid-template-columns: 1fr;
+    gap: 64px;
+  }
+}

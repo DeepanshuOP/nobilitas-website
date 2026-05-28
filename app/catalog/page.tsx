@@ -8,61 +8,7 @@ import Link from 'next/link';
 import styles from './catalog.module.css';
 
 /* ── Product data ─────────────────────── */
-type Tone = 'warm' | 'sage' | 'cocoa' | 'deep' | 'default';
-
-interface Product {
-  id: string;
-  cat: string;
-  icon: keyof typeof ICON_PATHS;
-  name: string;
-  meta: string;
-  badge: string | null;
-  solid: boolean;
-  tone: Tone;
-  sku: string;
-}
-
-const PRODUCTS: Product[] = [
-  { id: 'f01', cat: 'Furniture', icon: 'armchair', name: 'executive conference table — walnut', meta: '8 sizes · Godrej Interio', badge: 'Bestseller', solid: true, tone: 'warm', sku: 'OF-CT-W24' },
-  { id: 'f02', cat: 'Furniture', icon: 'armchair', name: 'ergonomic task chair — mesh back', meta: '5 colorways · BIFMA tested', badge: null, solid: false, tone: 'deep', sku: 'OF-TC-MB1' },
-  { id: 'f03', cat: 'Furniture', icon: 'armchair', name: 'modular workstation — 6-person cluster', meta: 'Custom dimensions', badge: null, solid: false, tone: 'default', sku: 'OF-WS-06' },
-  { id: 'c01', cat: 'Cleaning', icon: 'sparkles', name: 'industrial floor scrubber — 60L', meta: 'ISI · 3 capacities', badge: 'In stock', solid: false, tone: 'sage', sku: 'CL-FS-60' },
-  { id: 'c02', cat: 'Cleaning', icon: 'sparkles', name: 'diversey suma D1.1 — degreaser', meta: '5L · 25L · 200L drums', badge: null, solid: false, tone: 'default', sku: 'CL-DG-D1' },
-  { id: 'c03', cat: 'Cleaning', icon: 'sparkles', name: 'housekeeping cart — twin-bin', meta: 'Stainless · galvanised', badge: null, solid: false, tone: 'deep', sku: 'CL-HK-TB' },
-  { id: 'e01', cat: 'Electronics', icon: 'monitor', name: '27" 4K monitor — IPS panel', meta: 'Dell · HP · LG variants', badge: null, solid: false, tone: 'cocoa', sku: 'EL-MN-27' },
-  { id: 'e02', cat: 'Electronics', icon: 'monitor', name: 'multifunction printer A3 — laser', meta: 'Canon · Xerox', badge: null, solid: false, tone: 'default', sku: 'EL-PR-A3' },
-  { id: 'l01', cat: 'Lighting', icon: 'lamp', name: 'architectural pendant — antique brass', meta: '12 finishes · custom', badge: null, solid: false, tone: 'cocoa', sku: 'LT-PD-AB' },
-  { id: 'l02', cat: 'Lighting', icon: 'lamp', name: 'LED panel — 600×600 recessed', meta: '30W · 40W · 50W', badge: 'New 2026', solid: true, tone: 'warm', sku: 'LT-LP-66' },
-  { id: 's01', cat: 'Safety', icon: 'hardhat', name: 'safety helmet — ISI type-A', meta: 'Bulk pricing 100+', badge: null, solid: false, tone: 'default', sku: 'SF-HM-TA' },
-  { id: 's02', cat: 'Safety', icon: 'hardhat', name: 'high-visibility vest — class 2', meta: '5 sizes · custom branding', badge: null, solid: false, tone: 'warm', sku: 'SF-VS-C2' },
-  { id: 'p01', cat: 'Packaging', icon: 'package', name: 'corrugated boxes — 3-ply 5-ply', meta: 'Custom sizes · MOQ 500', badge: null, solid: false, tone: 'deep', sku: 'PK-CB-35' },
-  { id: 'n01', cat: 'Pantry', icon: 'coffee', name: 'commercial espresso machine — 2-group', meta: 'La Marzocco · Faema', badge: null, solid: false, tone: 'cocoa', sku: 'PN-ES-2G' },
-  { id: 'n02', cat: 'Pantry', icon: 'coffee', name: 'pantry refill — tea, coffee, sugar', meta: 'Monthly subscription', badge: 'Subscription', solid: true, tone: 'default', sku: 'PN-RF-MO' },
-  { id: 'g01', cat: 'Gifting', icon: 'gift', name: 'diwali hamper — mehfil edition', meta: 'Custom 24-piece sets', badge: 'Seasonal', solid: true, tone: 'warm', sku: 'CG-MH-24' },
-  { id: 'g02', cat: 'Gifting', icon: 'gift', name: 'onboarding kit — welcome box', meta: 'Branded · 4-piece', badge: null, solid: false, tone: 'sage', sku: 'CG-OB-04' },
-  { id: 'm01', cat: 'Mattress', icon: 'bed', name: 'hotel mattress — king 6-zone', meta: 'Sleepwell · Kurl-on', badge: null, solid: false, tone: 'default', sku: 'MT-HK-6Z' },
-  { id: 'b01', cat: 'Buggies', icon: 'carfront', name: 'electric buggy — 6-seater', meta: 'Lithium · 80km range', badge: null, solid: false, tone: 'sage', sku: 'BG-EL-06' },
-  { id: 'w01', cat: 'Cables', icon: 'cable', name: 'cat 6A LAN cable — 305m roll', meta: 'Shielded · plenum', badge: null, solid: false, tone: 'deep', sku: 'WR-LN-6A' },
-  { id: 'a01', cat: 'Audio', icon: 'speaker', name: 'conference speaker — dante', meta: 'Shure · Sennheiser', badge: null, solid: false, tone: 'cocoa', sku: 'AU-SP-DA' },
-  { id: 'pa01', cat: 'Paper', icon: 'filetext', name: 'letterhead — 100 GSM bond', meta: 'Min 500 sheets', badge: null, solid: false, tone: 'warm', sku: 'PA-LH-BD' }
-];
-
-/* ── Inline SVG paths ──────────────────────── */
-const ICON_PATHS = {
-  sparkles: 'M12 3l1.5 4 4 1.5-4 1.5L12 14l-1.5-4-4-1.5 4-1.5L12 3zM19 14l.8 2.2L22 17l-2.2.8L19 20l-.8-2.2L16 17l2.2-.8L19 14z',
-  armchair: 'M5 11a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3H5v-3zM5 14v6M19 14v6M7 9V5a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v4',
-  monitor: 'M2 3h20a0 0 0 0 1 0 0v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V3zM8 21h8M12 17v4',
-  lamp: 'M7 2l4 8h2l4-8H7zM10 10v10h4V10M8 20h8',
-  hardhat: 'M2 18a5 5 0 0 1 10 0M10 14a8 8 0 0 1 8-8 8 8 0 0 1 4 1M2 18h20',
-  package: 'M16.5 9.4 7.55 4.24M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16zm-10-11.76 8.73 5.05M12 22.08V12',
-  coffee: 'M17 8h1a4 4 0 1 1 0 8h-1M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8zM6 2v3M10 2v3M14 2v3',
-  gift: 'M20 12v10H4V12M2 7h20v5H2zM12 22V7M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z',
-  bed: 'M2 18v-7a3 3 0 0 1 3-3h14a3 3 0 0 1 3 3v7M2 14h20M2 18h20M8 11h4',
-  carfront: 'M6 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zM18 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zM2 14h20l-2-7H4z',
-  cable: 'M4 9V6a2 2 0 0 1 2-2h2v6H4zM16 4h2a2 2 0 0 1 2 2v3h-4zM8 10v4a4 4 0 0 0 8 0V10',
-  speaker: 'M6 3h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zM12 17.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM12 7h.01',
-  filetext: 'M14 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8M16 2l6 6M16 8H8M16 12H8M14 16H8'
-} as const;
+import { PRODUCTS, CATEGORY_COUNTS, CATEGORIES as LIB_CATEGORIES, ICON_PATHS, ProductTone } from '@/lib/products';
 
 function CategoryIcon({ name, dark }: { name: keyof typeof ICON_PATHS; dark: boolean }) {
   return (
@@ -80,24 +26,32 @@ function CategoryIcon({ name, dark }: { name: keyof typeof ICON_PATHS; dark: boo
 }
 
 /* ── Sidebar category data ────────────────────────────────────────────────── */
-const CATEGORIES = [
-  { label: 'All',         count: '22', cat: 'All'         },
-  { label: 'Cleaning',    count: '03', cat: 'Cleaning'    },
-  { label: 'Furniture',   count: '03', cat: 'Furniture'   },
-  { label: 'Electronics', count: '02', cat: 'Electronics' },
-  { label: 'Lighting',    count: '02', cat: 'Lighting'    },
-  { label: 'Safety & PPE',count: '02', cat: 'Safety'      },
-  { label: 'Packaging',   count: '01', cat: 'Packaging'   },
-  { label: 'Pantry',      count: '02', cat: 'Pantry'      },
-  { label: 'Corporate gifts', count: '02', cat: 'Gifting' },
-  { label: 'Mattresses',  count: '01', cat: 'Mattress'    },
-  { label: 'Buggies',     count: '01', cat: 'Buggies'     },
-  { label: 'Cables',      count: '01', cat: 'Cables'      },
-  { label: 'Audio',       count: '01', cat: 'Audio'       },
-  { label: 'Paper goods', count: '01', cat: 'Paper'       },
-] as const;
+const CATEGORY_LABELS: Record<string, string> = {
+  All: 'All',
+  Cleaning: 'Cleaning',
+  Furniture: 'Furniture',
+  Electronics: 'Electronics',
+  Lighting: 'Lighting',
+  Safety: 'Safety & PPE',
+  Packaging: 'Packaging',
+  Pantry: 'Pantry',
+  Gifting: 'Corporate gifts',
+  Mattress: 'Mattresses',
+  Buggies: 'Buggies',
+  Cables: 'Cables',
+  Audio: 'Audio',
+  Paper: 'Paper goods',
+};
 
-const TONE_CLASS: Record<Tone, string> = {
+const CATEGORIES = [
+  { label: 'All', cat: 'All' },
+  ...LIB_CATEGORIES.map(cat => ({ label: CATEGORY_LABELS[cat] || cat, cat }))
+].map(c => ({
+  ...c,
+  count: String(CATEGORY_COUNTS[c.cat] || 0).padStart(2, '0')
+}));
+
+const TONE_CLASS: Record<ProductTone, string> = {
   warm:    styles.toneWarm,
   sage:    styles.toneSage,
   cocoa:   styles.toneCocoa,
@@ -309,7 +263,7 @@ export default function CatalogPage() {
                   {filtered.map((p) => {
                     const isDark = p.tone === 'cocoa' || p.tone === 'deep';
                     return (
-                      <article key={p.id} className={styles.productCard}>
+                      <Link href={`/catalog/${p.id}`} key={p.id} className={styles.productCard}>
                         <div className={`${styles.productImg} ${TONE_CLASS[p.tone]}`}>
                           <span className={styles.sku}>{p.sku}</span>
                           {p.badge && (
@@ -332,7 +286,7 @@ export default function CatalogPage() {
                             <span className={styles.inq}>// inquiry</span>
                           </div>
                         </div>
-                      </article>
+                      </Link>
                     );
                   })}
                 </div>
@@ -344,7 +298,7 @@ export default function CatalogPage() {
                   {filtered.map((p) => {
                     const isDark = p.tone === 'cocoa' || p.tone === 'deep';
                     return (
-                      <div key={p.id} className={styles.listRow}>
+                      <Link href={`/catalog/${p.id}`} key={p.id} className={styles.listRow}>
                         <div className={styles.thumb}>
                           <div className={`${styles.productImg} ${TONE_CLASS[p.tone]}`} style={{ aspectRatio: '1', border: 'none' }}>
                             <div className={styles.centerIcon}>
@@ -365,7 +319,7 @@ export default function CatalogPage() {
                           )}
                         </div>
                         <div className={styles.go}>→</div>
-                      </div>
+                      </Link>
                     );
                   })}
                 </div>
