@@ -71,7 +71,7 @@ export default function Footer() {
         </div>
 
         {/* Giant wordmark */}
-        <div className={styles.wordmark} aria-hidden="true">nobilitas.</div>
+        <div className={`${styles.wordmark} reveal-up`} aria-hidden="true">nobilitas.</div>
 
         <div className={styles.footerBottom}>
           <div className="left">

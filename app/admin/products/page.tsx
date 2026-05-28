@@ -18,12 +18,13 @@ interface SearchParams {
   category?: string;
 }
 
-// Next.js 14 App Router passes searchParams as a plain object to page props.
+// Next.js 16 App Router passes searchParams as a Promise
 interface ProductsPageProps {
-  searchParams: SearchParams;
+  searchParams: Promise<SearchParams>;
 }
 
 export default async function ProductsPage({ searchParams }: ProductsPageProps) {
+  const params = await searchParams;
   const supabase = await createClient();
 
   // ── 1. Fetch categories for the filter dropdown ───────────────────────────
@@ -41,7 +42,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
     .order('created_at', { ascending: false });
 
   // Full-text style filter: match name OR brand (case-insensitive via ilike)
-  const searchTerm = searchParams.search?.trim();
+  const searchTerm = params.search?.trim();
   if (searchTerm) {
     // WHY or(): Supabase PostgREST requires explicit OR grouping for
     // multi-column ilike — chaining .ilike() would apply AND logic.
@@ -51,7 +52,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   }
 
   // Category filter: match on the UUID stored in category_id
-  const categoryFilter = searchParams.category?.trim();
+  const categoryFilter = params.category?.trim();
   if (categoryFilter) {
     query = query.eq('category_id', categoryFilter);
   }

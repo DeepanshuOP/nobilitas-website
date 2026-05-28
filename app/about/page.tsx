@@ -49,17 +49,17 @@ const IconFour = () => (
 
 const IconFive = () => (
   <svg viewBox="0 0 60 60" fill="none" style={{ width: '60px', height: '60px' }}>
-    <path d="M30 4 L52 17 L52 43 L30 56 L8 43 L8 17 Z" stroke="var(--gold)" strokeWidth="0.8" opacity="0.2"/>
-    <path d="M30 10 L46 19 L46 41 L30 50 L14 41 L14 19 Z" stroke="var(--gold)" strokeWidth="0.8" opacity="0.4"/>
-    <path d="M30 16 L40 21 L40 39 L30 44 L20 39 L20 21 Z" stroke="var(--gold)" strokeWidth="0.8" opacity="0.6"/>
-    <path d="M30 22 L34 24 L34 36 L30 38 L26 36 L26 24 Z" stroke="var(--gold)" strokeWidth="0.8" opacity="0.8"/>
-    <path d="M30 28 L31 29 L31 31 L30 32 L29 31 L29 29 Z" stroke="var(--gold)" strokeWidth="0.8" opacity="1"/>
+    <path d="M30 4 L52 17 L52 43 L30 56 L8 43 L8 17 Z" stroke="var(--gold)" strokeWidth="0.8" opacity="0.2" />
+    <path d="M30 10 L46 19 L46 41 L30 50 L14 41 L14 19 Z" stroke="var(--gold)" strokeWidth="0.8" opacity="0.4" />
+    <path d="M30 16 L40 21 L40 39 L30 44 L20 39 L20 21 Z" stroke="var(--gold)" strokeWidth="0.8" opacity="0.6" />
+    <path d="M30 22 L34 24 L34 36 L30 38 L26 36 L26 24 Z" stroke="var(--gold)" strokeWidth="0.8" opacity="0.8" />
+    <path d="M30 28 L31 29 L31 31 L30 32 L29 31 L29 29 Z" stroke="var(--gold)" strokeWidth="0.8" opacity="1" />
   </svg>
 );
 
 const ArrowIcon = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M20.78 12.53L14.03 19.28C13.88 19.43 13.69 19.5 13.5 19.5C13.31 19.5 13.12 19.43 12.97 19.28C12.68 18.99 12.68 18.51 12.97 18.22L18.44 12.75H3.75C3.34 12.75 3 12.41 3 12C3 11.59 3.34 11.25 3.75 11.25H18.44L12.97 5.78C12.68 5.49 12.68 5.01 12.97 4.72C13.26 4.43 13.74 4.43 14.03 4.72L20.78 11.47C21.07 11.76 21.07 12.24 20.78 12.53Z" fill="currentColor"/>
+    <path d="M20.78 12.53L14.03 19.28C13.88 19.43 13.69 19.5 13.5 19.5C13.31 19.5 13.12 19.43 12.97 19.28C12.68 18.99 12.68 18.51 12.97 18.22L18.44 12.75H3.75C3.34 12.75 3 12.41 3 12C3 11.59 3.34 11.25 3.75 11.25H18.44L12.97 5.78C12.68 5.49 12.68 5.01 12.97 4.72C13.26 4.43 13.74 4.43 14.03 4.72L20.78 11.47C21.07 11.76 21.07 12.24 20.78 12.53Z" fill="currentColor" />
   </svg>
 );
 

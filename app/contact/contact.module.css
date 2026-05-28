@@ -9,9 +9,10 @@
   position: relative;
   overflow: hidden;
   background:
-    radial-gradient(ellipse at 85% 20%, rgba(201,169,110,0.18) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 20%, rgba(201, 169, 110, 0.18) 0%, transparent 55%),
     var(--cream-light);
 }
+
 .pageHead::after {
   content: "";
   position: absolute;
@@ -21,6 +22,7 @@
   opacity: 0.04;
   pointer-events: none;
 }
+
 .pageHeadContainer {
   position: relative;
   z-index: 1;
@@ -37,15 +39,29 @@
   align-items: center;
   gap: 10px;
 }
-.breadcrumb a { color: var(--fg-3); transition: color 240ms; }
-.breadcrumb a:hover { color: var(--gold); }
-.breadcrumb .sep { color: var(--gold); }
-.breadcrumb .current { color: var(--fg-1); }
+
+.breadcrumb a {
+  color: var(--fg-3);
+  transition: color 240ms;
+}
+
+.breadcrumb a:hover {
+  color: var(--gold);
+}
+
+.breadcrumb .sep {
+  color: var(--gold);
+}
+
+.breadcrumb .current {
+  color: var(--fg-1);
+}
 
 /* Main Section */
 .mainSection {
   padding: clamp(80px, 11vw, 168px) 0;
 }
+
 .mainGrid {
   display: grid;
   grid-template-columns: 1.1fr 1fr;
@@ -66,9 +82,11 @@
   color: inherit;
   transition: background 240ms var(--ease-out);
 }
+
 .waCard:hover {
   background: #fff;
 }
+
 .waCircle {
   width: 52px;
   height: 52px;
@@ -78,13 +96,18 @@
   place-items: center;
   flex-shrink: 0;
 }
-.waText { flex: 1; }
+
+.waText {
+  flex: 1;
+}
+
 .waPhone {
   font-family: var(--serif);
   font-size: 22px;
   letter-spacing: -0.01em;
   color: var(--fg-1);
 }
+
 .waSub {
   font-family: var(--mono);
   font-size: 11px;
@@ -93,6 +116,7 @@
   color: var(--fg-3);
   margin-top: 6px;
 }
+
 .waArrow {
   font-size: 18px;
   color: var(--whatsapp);
@@ -107,6 +131,7 @@
   grid-template-columns: 1fr 1fr;
   gap: 32px;
 }
+
 .detailLabel {
   font-family: var(--mono);
   font-size: 10px;
@@ -116,6 +141,7 @@
   margin-bottom: 8px;
   display: block;
 }
+
 .detailValue {
   font-family: var(--sans);
   font-size: 14px;
@@ -130,15 +156,18 @@
   border-radius: 4px;
   padding: 40px;
 }
+
 .formFields {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
+
 .fieldGroup {
   display: flex;
   flex-direction: column;
 }
+
 .fieldGroup label {
   display: block;
   font-family: var(--sans);
@@ -147,6 +176,12 @@
   letter-spacing: 0.04em;
   color: var(--fg-2);
   margin-bottom: 8px;
+  transition: color 240ms, transform 240ms;
+}
+
+.fieldGroup:focus-within label {
+  color: var(--gold);
+  transform: translateY(-2px);
 }
 
 .inputBase {
@@ -161,11 +196,18 @@
   outline: none;
   transition: border-color 240ms var(--ease-out);
 }
+
 .inputBase::placeholder {
   color: var(--fg-3);
 }
-.inputBase:focus {
+
+.inputBase:focus,
+.textarea:focus,
+.select:focus {
   border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(201,169,110,0.12);
+  transition: border-color 240ms var(--ease-out),
+              box-shadow 240ms var(--ease-out);
 }
 
 .textarea {
@@ -193,6 +235,7 @@
   gap: clamp(40px, 6vw, 64px);
   align-items: start;
 }
+
 .mapPlaceholder {
   aspect-ratio: 16 / 9;
   background: linear-gradient(150deg, var(--cream-dark) 0%, var(--cream) 100%);
@@ -204,6 +247,7 @@
   justify-content: center;
   gap: 14px;
 }
+
 .mapPlaceholder svg {
   width: 36px;
   height: 36px;
@@ -215,10 +259,21 @@
 
 /* Responsive */
 @media (max-width: 860px) {
-  .mainGrid { grid-template-columns: 1fr; }
-  .contactDetails { grid-template-columns: 1fr; }
-  .mapBlock { grid-template-columns: 1fr; }
+  .mainGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .contactDetails {
+    grid-template-columns: 1fr;
+  }
+
+  .mapBlock {
+    grid-template-columns: 1fr;
+  }
 }
+
 @media (max-width: 560px) {
-  .formCard { padding: 24px; }
+  .formCard {
+    padding: 24px;
+  }
 }

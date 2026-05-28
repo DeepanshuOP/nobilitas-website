@@ -65,8 +65,10 @@ function NavLink({ label, href, pathname }: NavItem & { pathname: string }) {
           left:       0,
           height:     '1px',
           background: T.gold,
-          width:      highlighted ? '100%' : '0%',
-          transition: `width 240ms ${T.ease}`,
+          width:      '100%',
+          transformOrigin: 'left',
+          transform:  highlighted ? 'scaleX(1)' : 'scaleX(0)',
+          transition: `transform 240ms ${T.ease}`,
         }}
       />
     </Link>

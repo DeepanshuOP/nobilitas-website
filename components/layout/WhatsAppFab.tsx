@@ -12,12 +12,11 @@ export default function WhatsAppFab() {
       {/* ── Keyframe + tooltip styles ─────────────────────────────────────── */}
       <style>{`
         @keyframes nob-pulse {
-          0%   { opacity: 1; transform: scale(1); }
-          70%  { opacity: 0; transform: scale(1.5); }
-          100% { opacity: 0; transform: scale(1.5); }
+          0%   { opacity: 0.5; transform: scale(1); }
+          100% { opacity: 0; transform: scale(1.8); }
         }
         .nob-fab-pulse {
-          animation: nob-pulse 2.5s ease-out infinite;
+          animation: nob-pulse 2.8s infinite;
         }
       `}</style>
 

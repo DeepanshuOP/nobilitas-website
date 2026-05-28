@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import { ICON_PATHS, ProductTone } from '@/lib/products'; // Keep ICON_PATHS for SVGs
 import { Category, ProductWithCategory } from '@/lib/types';
@@ -55,14 +55,34 @@ export default function CatalogClient({ products, categories }: CatalogClientPro
   const [activeFilter, setActiveFilter] = useState<string>('All');
   const [view, setView] = useState<'grid' | 'list'>('grid');
   const [sort, setSort] = useState('Featured');
+  const [search, setSearch] = useState('');
 
-  const filtered = activeFilter === 'All'
-    ? products
-    : products.filter((p) => p.category_id === activeFilter);
+  const ITEMS_PER_PAGE = 12;
+  const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
+
+  const filteredProducts = useMemo(() => {
+    let result = activeFilter === 'All'
+      ? products
+      : products.filter(p => p.category_id === activeFilter);
+    
+    if (search.trim()) {
+      const q = search.toLowerCase();
+      result = result.filter(p =>
+        p.name.toLowerCase().includes(q) ||
+        (p.brand && p.brand.toLowerCase().includes(q)) ||
+        (p.sku && p.sku.toLowerCase().includes(q)) ||
+        (p.tags && p.tags.some(t => t.toLowerCase().includes(q)))
+      );
+    }
+    return result;
+  }, [products, activeFilter, search]);
+
+  useEffect(() => { setVisibleCount(ITEMS_PER_PAGE); }, [activeFilter, search]);
 
   // Compute how many products belong to each category
   const categoryCounts = useMemo(() => {
-    const counts: Record<string, number> = { All: products.length };
+    const counts: Record<string, number> = {};
+    counts['All'] = products.length;
     categories.forEach(cat => {
       counts[cat.id] = products.filter(p => p.category_id === cat.id).length;
     });
@@ -71,18 +91,21 @@ export default function CatalogClient({ products, categories }: CatalogClientPro
 
   const totalCount = String(products.length).padStart(2, '0');
 
-  const sortedProducts = [...filtered].sort((a, b) => {
+  const sortedProducts = [...filteredProducts].sort((a, b) => {
     if (sort === 'A → Z') return a.name.localeCompare(b.name);
     if (sort === 'Newest') return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
     if (sort === 'Most inquired') return (b.is_featured ? 1 : 0) - (a.is_featured ? 1 : 0);
     return 0;
   });
 
+  const displayedProducts = sortedProducts.slice(0, visibleCount);
+
   const getAvailText = (p: ProductWithCategory) => {
-    if (p.pack_sizes && p.pack_sizes.length > 0) {
-      return p.pack_sizes[0];
-    }
-    return 'Available on inquiry';
+    return p.status === 'out_of_stock' ? 'Currently unavailable'
+    : p.status === 'on_request' ? 'Available on request'
+    : p.pack_sizes && p.pack_sizes.length > 0
+    ? p.pack_sizes.join(' · ')
+    : 'Available on inquiry';
   };
 
   const getBadge = (p: ProductWithCategory) => {
@@ -110,9 +133,9 @@ export default function CatalogClient({ products, categories }: CatalogClientPro
           <div className={styles.pageHeadGrid}>
             <h1 className="h-display reveal-up delay-1">
               {activeFilter === 'All' ? (
-                <>{products.length} <em>products</em>.</>
+                <><span key={products.length} className={styles.headCount}>{products.length}</span> <em>products</em>.</>
               ) : (
-                <>{filtered.length} <em>{categories.find(c => c.id === activeFilter)?.name.toLowerCase()}</em>.</>
+                <><span key={filteredProducts.length} className={styles.headCount}>{filteredProducts.length}</span> <em>{categories.find(c => c.id === activeFilter)?.name.toLowerCase()}</em>.</>
               )}
             </h1>
             <div className={`${styles.pageHeadGridRight} reveal-up delay-2`}>
@@ -124,9 +147,9 @@ export default function CatalogClient({ products, categories }: CatalogClientPro
 
           <div className={styles.headStats}>
             {[
-              { num: '10',    lbl: 'Categories'       },
-              { num: '62',    lbl: 'Partner brands'   },
-              { num: '26',    lbl: 'States served'    },
+              { num: '10', lbl: 'Categories' },
+              { num: '62', lbl: 'Partner brands' },
+              { num: '26', lbl: 'States served' },
               { num: '4 hrs', lbl: 'Quote turnaround' },
             ].map((s) => (
               <div key={s.lbl} className={styles.stat}>
@@ -175,66 +198,7 @@ export default function CatalogClient({ products, categories }: CatalogClientPro
                 </ul>
               </div>
 
-              <div className={styles.filterGroup}>
-                <div className={styles.filterGroupHead}>
-                  <span className={styles.filterGroupHeadNum}>// ii</span>
-                  <span className={styles.filterGroupHeadTitle}>Filters</span>
-                </div>
-                {[
-                  { label: 'In stock' },
-                  { label: 'ISI / BIS certified' },
-                  { label: 'Custom branding' },
-                  { label: 'Bulk MOQ (100+)' },
-                  { label: 'Available for export' },
-                ].map(({ label }) => (
-                  <label key={label} className={styles.check}>
-                    <input type="checkbox" />
-                    <span className={styles.box}>
-                      <svg viewBox="0 0 24 24" fill="none" strokeLinecap="round">
-                        <path d="M5 12l5 5 9-11" />
-                      </svg>
-                    </span>
-                    <span>{label}</span>
-                  </label>
-                ))}
-              </div>
 
-              <div className={styles.filterGroup}>
-                <div className={styles.filterGroupHead}>
-                  <span className={styles.filterGroupHeadNum}>// iii</span>
-                  <span className={styles.filterGroupHeadTitle}>Lead time</span>
-                </div>
-                {['Same day (Jaipur)', '3–5 working days', '1–2 weeks', 'Custom / quote'].map((label) => (
-                  <label key={label} className={styles.check}>
-                    <input type="checkbox" />
-                    <span className={styles.box}>
-                      <svg viewBox="0 0 24 24" fill="none" strokeLinecap="round">
-                        <path d="M5 12l5 5 9-11" />
-                      </svg>
-                    </span>
-                    <span>{label}</span>
-                  </label>
-                ))}
-              </div>
-
-              <div className={styles.filterGroup}>
-                <div className={styles.filterGroupHead}>
-                  <span className={styles.filterGroupHeadNum}>// iv</span>
-                  <span className={styles.filterGroupHeadTitle}>Partner brand</span>
-                </div>
-                {['Diversey', '3M', 'Godrej Interio', 'Kimberly-Clark', 'Philips'].map((b) => (
-                  <label key={b} className={styles.check}>
-                    <input type="checkbox" />
-                    <span className={styles.box}>
-                      <svg viewBox="0 0 24 24" fill="none" strokeLinecap="round">
-                        <path d="M5 12l5 5 9-11" />
-                      </svg>
-                    </span>
-                    <span>{b}</span>
-                  </label>
-                ))}
-                <button className={styles.clearBtn} type="button">Reset all filters →</button>
-              </div>
             </aside>
 
             <div>
@@ -244,13 +208,20 @@ export default function CatalogClient({ products, categories }: CatalogClientPro
                     // {activeFilter === 'All' ? 'All' : categories.find(c => c.id === activeFilter)?.name}
                   </span>
                   <span className={styles.countText}>
-                    showing <strong>{filtered.length}</strong> of {products.length} products
+                    showing <strong>{filteredProducts.length}</strong> of {products.length} products
                   </span>
                 </div>
+                <input
+                  type="text"
+                  className={styles.searchInput}
+                  placeholder="Search products..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                />
                 <div className={styles.toolbarRight}>
-                  <select 
-                    className={styles.sortSelect} 
-                    value={sort} 
+                  <select
+                    className={styles.sortSelect}
+                    value={sort}
                     onChange={(e) => setSort(e.target.value)}
                   >
                     <option>Sort · Featured</option>
@@ -285,9 +256,43 @@ export default function CatalogClient({ products, categories }: CatalogClientPro
                 </div>
               </div>
 
-              {view === 'grid' && (
-                <div className={styles.productsGrid}>
-                  {sortedProducts.map((p) => {
+              {filteredProducts.length === 0 ? (
+                <div className={styles.emptyState}>
+                  <p className={styles.emptyStateTitle}>
+                    {search.trim() ? `No products found for '${search}'.` : `No products listed yet in this category.`}
+                  </p>
+                  <p className={styles.emptyStateBody}>
+                    {search.trim() ? `Try a different search term or browse by category.` : `We supply across all categories — send us an inquiry and we will source exactly what you need.`}
+                  </p>
+                  {search.trim() ? (
+                    <button onClick={() => setSearch('')} className="btn btn--outline-dark" style={{ marginTop: 8 }}>
+                      Clear search
+                    </button>
+                  ) : (
+                    <>
+                      <a
+                        href={`https://wa.me/919314093160?text=Hi, I need products from the ${activeFilter === 'All' ? 'All' : (categories.find(c => c.id === activeFilter)?.name ?? 'this category')} category`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn btn--whatsapp"
+                        style={{ marginTop: 8, display: 'inline-flex', alignItems: 'center', gap: 10 }}
+                      >
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+                          <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+                        </svg>
+                        Inquire on WhatsApp
+                      </a>
+                      <a href="/contact" className="btn btn--outline-dark" style={{ marginTop: 8 }}>
+                        Or send an inquiry form
+                      </a>
+                    </>
+                  )}
+                </div>
+              ) : (
+                <>
+                  {view === 'grid' && (
+                    <div className={styles.productsGrid}>
+                      {displayedProducts.map((p, index) => {
                     const catSlug = categories.find(c => c.id === p.category_id)?.slug || '';
                     const tone = getToneForCategory(catSlug);
                     const isDark = tone === 'cocoa' || tone === 'deep';
@@ -295,8 +300,8 @@ export default function CatalogClient({ products, categories }: CatalogClientPro
                     const iconName = categories.find(c => c.id === p.category_id)?.icon_name || '';
 
                     return (
-                      <Link href={`/catalog/${p.slug}`} key={p.id} className={styles.productCard}>
-                        <div 
+                      <Link href={`/catalog/${p.slug}`} key={`${activeFilter}-${p.id}`} className={`${styles.productCard} ${styles.productCardAnimated}`} style={{ animationDelay: `${(index % 6) * 60}ms` }}>
+                        <div
                           className={`${styles.productImg} ${!p.image_url ? TONE_CLASS[tone] : ''}`}
                           style={p.image_url ? { backgroundImage: `url('${p.image_url}')`, backgroundSize: 'cover', backgroundPosition: 'center' } : undefined}
                         >
@@ -329,9 +334,9 @@ export default function CatalogClient({ products, categories }: CatalogClientPro
                 </div>
               )}
 
-              {view === 'list' && (
-                <div className={styles.productsList}>
-                  {sortedProducts.map((p) => {
+                  {view === 'list' && (
+                    <div className={styles.productsList}>
+                      {displayedProducts.map((p, index) => {
                     const catSlug = categories.find(c => c.id === p.category_id)?.slug || '';
                     const tone = getToneForCategory(catSlug);
                     const isDark = tone === 'cocoa' || tone === 'deep';
@@ -339,10 +344,10 @@ export default function CatalogClient({ products, categories }: CatalogClientPro
                     const iconName = categories.find(c => c.id === p.category_id)?.icon_name || '';
 
                     return (
-                      <Link href={`/catalog/${p.slug}`} key={p.id} className={styles.listRow}>
+                      <Link href={`/catalog/${p.slug}`} key={`${activeFilter}-${p.id}`} className={`${styles.listRow} ${styles.productCardAnimated}`} style={{ animationDelay: `${(index % 6) * 60}ms` }}>
                         <div className={styles.thumb}>
-                          <div 
-                            className={`${styles.productImg} ${!p.image_url ? TONE_CLASS[tone] : ''}`} 
+                          <div
+                            className={`${styles.productImg} ${!p.image_url ? TONE_CLASS[tone] : ''}`}
                             style={p.image_url ? { backgroundImage: `url('${p.image_url}')`, backgroundSize: 'cover', backgroundPosition: 'center', aspectRatio: '1', border: 'none' } : { aspectRatio: '1', border: 'none' }}
                           >
                             {!p.image_url && (
@@ -368,18 +373,24 @@ export default function CatalogClient({ products, categories }: CatalogClientPro
                       </Link>
                     );
                   })}
-                </div>
+                    </div>
+                  )}
+                </>
               )}
 
-              <div className={styles.loadMoreWrap}>
-                <div className={styles.progressLabel}>Viewing {filtered.length} of {products.length} products</div>
-                <div className={styles.progress}>
-                  <div className={styles.progressFill} style={{ width: `${products.length === 0 ? 0 : (filtered.length / products.length) * 100}%` }} />
+              {filteredProducts.length > ITEMS_PER_PAGE && (
+                <div className={styles.loadMoreWrap}>
+                  <div className={styles.progressLabel}>Viewing {Math.min(visibleCount, filteredProducts.length)} of {filteredProducts.length} products</div>
+                  <div className={styles.progress}>
+                    <div className={styles.progressFill} style={{ width: `${filteredProducts.length === 0 ? 0 : (Math.min(visibleCount, filteredProducts.length) / filteredProducts.length) * 100}%` }} />
+                  </div>
+                  {visibleCount < filteredProducts.length && (
+                    <button type="button" className="btn btn--outline-dark" onClick={() => setVisibleCount(prev => prev + ITEMS_PER_PAGE)}>
+                      Load more <span className="arrow">↓</span>
+                    </button>
+                  )}
                 </div>
-                <button type="button" className="btn btn--outline-dark">
-                  Load more <span className="arrow">↓</span>
-                </button>
-              </div>
+              )}
 
               <div className={styles.inlineCta}>
                 <div>
