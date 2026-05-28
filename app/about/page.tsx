@@ -4,6 +4,22 @@ import Link from 'next/link';
 import styles from './about.module.css';
 import { CLIENTS, BRANDS } from '@/lib/siteData';
 
+const TEAM_GRADIENTS = [
+  'linear-gradient(135deg, #f0e3cc, #d8c5a0)',
+  'linear-gradient(135deg, #ddd3bd, #c9c0a8)',
+  'linear-gradient(135deg, #c9b69c, #a89373)',
+  'linear-gradient(135deg, #d9dccf, #b8c0ad)',
+  'linear-gradient(135deg, #f0e3cc, #d8c5a0)',
+  'linear-gradient(135deg, #ece5d7, #ddd3bd)',
+];
+
+function formatProductCount(n: number): string {
+  if (n === 0) return '—';
+  if (n < 100) return `${n}`;
+  const rounded = Math.floor(n / 100) * 100;
+  return `${rounded.toLocaleString()}+`;
+}
+
 // SVG components for Values
 const IconOne = () => (
   <svg viewBox="0 0 60 60" fill="none" style={{ width: '60px', height: '60px' }}>
@@ -66,9 +82,15 @@ const ArrowIcon = () => (
 
 export default function AboutPage() {
   const [mounted, setMounted] = useState(false);
+  const [stats, setStats] = useState({ productCount: 0, categoryCount: 0 });
 
   useEffect(() => {
     setMounted(true);
+    
+    fetch('/api/stats')
+      .then(r => r.json())
+      .then(data => setStats(data))
+      .catch(() => {});
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -152,8 +174,8 @@ export default function AboutPage() {
         <div className={styles.container}>
           <div className={styles.storyWrap}>
             <div className={styles.label}>
-              <p className={styles.labelText}>// 01</p>
-              <p className={styles.labelText}>/ About Us</p>
+              <p>// 01</p>
+              <p>/ About Us</p>
             </div>
             <div className={styles.storyContent}>
               <div className={styles.storyLeft}>
@@ -176,8 +198,8 @@ export default function AboutPage() {
                 </p>
                 <div className={styles.storyKeyMetric}>
                   <div className={styles.keyMetricLeft} data-reveal="up" data-delay="100">
-                    <h2 className={styles.h2SansLeft}>1,200+</h2>
-                    <p className={styles.p1LeftRegularGrey}>Products across 10 categories</p>
+                    <h2 className={styles.h2SansLeft}>{formatProductCount(stats.productCount)}</h2>
+                    <p className={styles.p1LeftRegularGrey}>Products across {stats.categoryCount || '—'} categories</p>
                   </div>
                   <div className={styles.keyMetricRight} data-reveal="up" data-delay="200">
                     <h2 className={styles.h2SansLeft}>400+</h2>
@@ -196,8 +218,8 @@ export default function AboutPage() {
           <div className={styles.partnerWrap}>
             <div className={styles.partnerHeading}>
               <div className={styles.label}>
-                <p className={styles.labelText}>// 02</p>
-                <p className={styles.labelText}>/ Our Clients</p>
+                <p>// 02</p>
+                <p>/ Our Clients</p>
               </div>
               <h2 className={styles.h2SerifLeft} data-reveal="up">trusted by hundreds</h2>
             </div>
@@ -227,8 +249,8 @@ export default function AboutPage() {
         <div className={styles.container}>
           <div className={styles.visionMissionWrap}>
             <div className={styles.label}>
-              <p className={styles.labelText}>// 03</p>
-              <p className={styles.labelText}>/ Vision & Mission</p>
+              <p>// 03</p>
+              <p>/ Vision & Mission</p>
             </div>
             <div className={styles.visionMissionHeading}>
               <div className={styles.visionMissionTitle}>
@@ -267,8 +289,8 @@ export default function AboutPage() {
         <div className={styles.container}>
           <div className={styles.valueWrap}>
             <div className={styles.label}>
-              <p className={styles.labelText}>// 04</p>
-              <p className={styles.labelText}>/ Values</p>
+              <p>// 04</p>
+              <p>/ Values</p>
             </div>
             <div className={styles.valueHeading}>
               <div className={styles.valueTitle}>
@@ -330,8 +352,8 @@ export default function AboutPage() {
           <div className={styles.brandsHeader}>
             <div className={styles.brandsHeaderLeft}>
               <div className={styles.label}>
-                <p className={styles.labelText}>// 05</p>
-                <p className={styles.labelText}>/ Brands we work with</p>
+                <p>// 05</p>
+                <p>/ Brands we work with</p>
               </div>
               <h2 className={styles.brandsH2} data-reveal="up">sourced from the best.</h2>
             </div>
@@ -367,8 +389,8 @@ export default function AboutPage() {
         <div className={styles.container}>
           <div className={styles.milestoneWrap}>
             <div className={styles.label}>
-              <p className={styles.labelText}>// 06</p>
-              <p className={styles.labelText}>/ Milestone</p>
+              <p>// 06</p>
+              <p>/ Milestone</p>
             </div>
             <div className={styles.milestoneContent}>
               <div className={styles.milestoneTitle}>
@@ -410,8 +432,8 @@ export default function AboutPage() {
       <section className={styles.teamsSection}>
         <div className={styles.container}>
           <div className={styles.label}>
-            <p className={styles.labelText}>// 07</p>
-            <p className={styles.labelText}>/ Our Team</p>
+            <p>// 07</p>
+            <p>/ Our Team</p>
           </div>
           <div className={styles.teamsHeading}>
             <h2 className={styles.h2SerifLeft} data-reveal="up">meet our team</h2>
@@ -426,8 +448,15 @@ export default function AboutPage() {
               { id: '006', name: 'Ananya Rao', role: 'Client Experience', tone: styles.toneDefault },
             ].map((member, i) => (
               <div className={styles.teamCard} key={member.id} data-reveal="up" data-delay={['100', '200', '300'][i % 3]}>
-                <div className={`${styles.teamImage} ${member.tone}`}>
-                  <p className={styles.teamImageText}>Placeholder</p>
+                <div
+                  className={styles.teamImage}
+                  style={{ background: TEAM_GRADIENTS[i % 6] }}
+                >
+                  <svg width="48" height="48" viewBox="0 0 60 60"
+                    fill="none" stroke="rgba(90,79,66,0.4)" strokeWidth="1">
+                    <circle cx="30" cy="20" r="12"/>
+                    <path d="M6 60c0-13 48-13 48 0"/>
+                  </svg>
                 </div>
                 <div className={styles.teamText}>
                   <p className={styles.teamNumber}>// {member.id}</p>

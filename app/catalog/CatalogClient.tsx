@@ -49,9 +49,11 @@ function getToneForCategory(slug: string): ProductTone {
 interface CatalogClientProps {
   products: ProductWithCategory[];
   categories: Category[];
+  productCount: number;
+  categoryCount: number;
 }
 
-export default function CatalogClient({ products, categories }: CatalogClientProps) {
+export default function CatalogClient({ products, categories, productCount, categoryCount }: CatalogClientProps) {
   const [activeFilter, setActiveFilter] = useState<string>('All');
   const [view, setView] = useState<'grid' | 'list'>('grid');
   const [sort, setSort] = useState('Featured');
@@ -133,7 +135,7 @@ export default function CatalogClient({ products, categories }: CatalogClientPro
           <div className={styles.pageHeadGrid}>
             <h1 className="h-display reveal-up delay-1">
               {activeFilter === 'All' ? (
-                <><span key={products.length} className={styles.headCount}>{products.length}</span> <em>products</em>.</>
+                <><span key={productCount} className={styles.headCount}>{productCount}</span> <em>products</em>.</>
               ) : (
                 <><span key={filteredProducts.length} className={styles.headCount}>{filteredProducts.length}</span> <em>{categories.find(c => c.id === activeFilter)?.name.toLowerCase()}</em>.</>
               )}
@@ -147,7 +149,7 @@ export default function CatalogClient({ products, categories }: CatalogClientPro
 
           <div className={styles.headStats}>
             {[
-              { num: '10', lbl: 'Categories' },
+              { num: categoryCount.toString(), lbl: 'Categories' },
               { num: '62', lbl: 'Partner brands' },
               { num: '26', lbl: 'States served' },
               { num: '4 hrs', lbl: 'Quote turnaround' },

@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import styles from './AboutSection.module.css';
+import { SiteStats, formatProductCount } from '@/lib/stats';
 
-export default function AboutSection() {
+export default function AboutSection({ stats }: { stats: SiteStats }) {
   return (
     <section className="section" id="about">
       <div className={`container ${styles.about}`}>
@@ -14,7 +15,7 @@ export default function AboutSection() {
           </h2>
           <div className={`${styles.meta} reveal-up delay-2`}>
             <strong>One inquiry, one quote, one supplier.</strong>
-            <span>10 categories · 1,200+ products · 62 partner brands</span>
+            <span>{stats.categoryCount} categories · {formatProductCount(stats.productCount)} products · 62 partner brands</span>
           </div>
         </div>
 

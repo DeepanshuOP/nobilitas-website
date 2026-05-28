@@ -8,6 +8,7 @@ import FeaturedSection    from '@/components/home/FeaturedSection';
 import TestimonialsSection from '@/components/home/TestimonialsSection';
 import PartnersSection    from '@/components/home/PartnersSection';
 import CtaSection         from '@/components/home/CtaSection';
+import { getSiteStats }   from '@/lib/stats';
 
 export const metadata: Metadata = {
   title: "Nobilitas — Equipping India's finest workplaces",
@@ -16,11 +17,13 @@ export const metadata: Metadata = {
     'Pan-India delivery from Jaipur. Quote within four working hours.',
 };
 
-export default function HomePage() {
+export default async function HomePage() {
+  const stats = await getSiteStats();
+
   return (
     <main>
       <HeroSection />
-      <AboutSection />
+      <AboutSection stats={stats} />
       <NumbersSection />
       <CategoriesSection />
       <ArrivalsSection />

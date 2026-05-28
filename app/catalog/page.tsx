@@ -33,5 +33,8 @@ export default async function CatalogPage() {
     );
   }
 
-  return <CatalogClient products={productsResponse.data} categories={categoriesResponse.data} />;
+  const productCount = productsResponse.data?.length ?? 0;
+  const categoryCount = categoriesResponse.data?.length ?? 0;
+
+  return <CatalogClient products={productsResponse.data} categories={categoriesResponse.data} productCount={productCount} categoryCount={categoryCount} />;
 }
