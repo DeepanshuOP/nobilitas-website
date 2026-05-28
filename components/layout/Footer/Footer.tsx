@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { COMPANY } from '@/lib/siteData';
 import styles from './Footer.module.css';
 
 export default function Footer() {
@@ -20,7 +21,7 @@ export default function Footer() {
             <p className={styles.tagline}>
               Equipping India&apos;s finest workplaces — quietly, since 2014.
             </p>
-            <Link href="https://wa.me/919876543210" className="btn btn--whatsapp" target="_blank" rel="noopener noreferrer">
+            <Link href={`https://wa.me/${COMPANY.whatsapp}`} className="btn btn--whatsapp" target="_blank" rel="noopener noreferrer">
               WhatsApp inquiry <span className="arrow">→</span>
             </Link>
           </div>
@@ -54,16 +55,16 @@ export default function Footer() {
           <div className={styles.footerCol}>
             <h5>Contact</h5>
             <ul>
-              <li><Link href="tel:+919876543210">+91 98765 43210</Link></li>
-              <li><Link href="https://wa.me/919876543210" target="_blank" rel="noopener noreferrer">WhatsApp · 24×7</Link></li>
+              <li><Link href={`tel:${COMPANY.phone.replace(/ /g, '')}`}>{COMPANY.phone}</Link></li>
+              <li><Link href={`https://wa.me/${COMPANY.whatsapp}`} target="_blank" rel="noopener noreferrer">WhatsApp · 24×7</Link></li>
               <li>
-                <Link href="mailto:sales@nobilitas.in">Sales enquiries</Link>
-                <div className={styles.monoLine}>sales@nobilitas.in</div>
+                <Link href={`mailto:${COMPANY.email}`}>Sales enquiries</Link>
+                <div className={styles.monoLine}>{COMPANY.email}</div>
               </li>
               <li>
-                <span>Nobilitas Ventures LLP</span>
+                <span>{COMPANY.name}</span>
                 <div className={styles.monoLine}>
-                  12, Sansar Chandra Road,<br />Jaipur 302001
+                  {COMPANY.addressLine1},<br />{COMPANY.addressLine2}, {COMPANY.city}
                 </div>
               </li>
             </ul>
@@ -75,9 +76,9 @@ export default function Footer() {
 
         <div className={styles.footerBottom}>
           <div className="left">
-            <span>GSTIN · 08AAJFN1234L1Z5</span>
-            <span>Estd. Jaipur 2014</span>
-            <span>© 2026 Nobilitas Ventures LLP</span>
+            <span>GSTIN · {COMPANY.gst}</span>
+            <span>Estd. Jaipur {COMPANY.estd}</span>
+            <span>© 2026 {COMPANY.name}</span>
           </div>
           <div>All inquiries answered within 4 working hours.</div>
         </div>

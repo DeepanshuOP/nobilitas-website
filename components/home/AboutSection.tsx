@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import styles from './AboutSection.module.css';
 import { SiteStats, formatProductCount } from '@/lib/stats';
+import { COMPANY } from '@/lib/siteData';
 
 export default function AboutSection({ stats }: { stats: SiteStats }) {
   return (
@@ -32,7 +33,7 @@ export default function AboutSection({ stats }: { stats: SiteStats }) {
             </Link>
           </div>
           <div className={styles.aboutImage}>
-            <span className={styles.caption}>// Showroom · Sansar Chandra Road, Jaipur</span>
+            <span className={styles.caption}>// Showroom · {COMPANY.addressLine2}, {COMPANY.city.replace(/ \d+$/, '')}</span>
           </div>
         </div>
       </div>

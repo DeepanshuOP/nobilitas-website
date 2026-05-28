@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 import { CreateInquiryInput } from '@/lib/types';
+import { COMPANY } from '@/lib/siteData';
 import styles from './contact.module.css';
 
 export default function ContactPage() {
@@ -115,7 +116,7 @@ export default function ContactPage() {
             </p>
 
             <a
-              href="https://wa.me/919876543210"
+              href={`https://wa.me/${COMPANY.whatsapp}`}
               target="_blank"
               rel="noopener noreferrer"
               className={styles.waCard}
@@ -126,7 +127,7 @@ export default function ContactPage() {
                 </svg>
               </div>
               <div className={styles.waText}>
-                <div className={styles.waPhone}>+91 98765 43210</div>
+                <div className={styles.waPhone}>{COMPANY.phone}</div>
                 <div className={styles.waSub}>WhatsApp · Mon–Sat · 9 AM – 7 PM IST</div>
               </div>
               <span className={styles.waArrow}>↗</span>
@@ -136,19 +137,19 @@ export default function ContactPage() {
               <div className={styles.detailItem}>
                 <span className={styles.detailLabel}>Email</span>
                 <span className={styles.detailValue}>
-                  <a href="mailto:sales@nobilitas.in" style={{ color: 'inherit' }}>sales@nobilitas.in</a>
+                  <a href={`mailto:${COMPANY.email}`} style={{ color: 'inherit' }}>{COMPANY.email}</a>
                 </span>
               </div>
               <div className={styles.detailItem}>
                 <span className={styles.detailLabel}>Phone</span>
                 <span className={styles.detailValue}>
-                  <a href="tel:+919876543210" style={{ color: 'inherit' }}>+91 98765 43210</a>
+                  <a href={`tel:${COMPANY.phone.replace(/ /g, '')}`} style={{ color: 'inherit' }}>{COMPANY.phone}</a>
                 </span>
               </div>
               <div className={styles.detailItem}>
                 <span className={styles.detailLabel}>Address</span>
                 <span className={styles.detailValue}>
-                  12, Sansar Chandra Road, C-Scheme, Jaipur 302001
+                  {COMPANY.addressLine1}, {COMPANY.addressLine2}, {COMPANY.city}
                 </span>
               </div>
               <div className={styles.detailItem}>
@@ -294,9 +295,9 @@ export default function ContactPage() {
               our jaipur office.
             </h2>
             <p style={{ fontFamily: 'var(--sans)', fontWeight: 300, fontSize: '15px', lineHeight: '1.8', color: 'var(--fg-2)' }}>
-              12, Sansar Chandra Road<br/>
-              C-Scheme, Jaipur 302001<br/>
-              Rajasthan, India
+              {COMPANY.addressLine1}<br/>
+              {COMPANY.addressLine2}, {COMPANY.city}<br/>
+              {COMPANY.state}
             </p>
             <p style={{ fontFamily: 'var(--mono)', fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--fg-3)', marginTop: '20px' }}>
               // Pan-India delivery from Sitapura warehouse

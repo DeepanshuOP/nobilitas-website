@@ -1,3 +1,19 @@
+// ─── Company Details ───────────────────────────────────────────────────────────
+
+export const COMPANY = {
+  name: 'Nobilitas Ventures LLP',
+  gst: '08AANFN2099R1Z8',
+  email: 'mail@nobilitas.in',
+  phone: '+91 98765 43210',
+  whatsapp: '919876543210',
+  addressLine1: 'C 3 & 4, Above Evok Furniture Store',
+  addressLine2: 'MJRP College Road, Nandpuri',
+  city: 'Jaipur 302019',
+  state: 'Rajasthan, India',
+  fullAddress: 'C 3 & 4, Above Evok Furniture Store, MJRP College Road, Nandpuri, Jaipur 302019, Rajasthan',
+  estd: '2014',
+} as const
+
 // ─── Clients ─────────────────────────────────────────────────────────────────
 // Used on: homepage partners marquee, about page clients grid
 
