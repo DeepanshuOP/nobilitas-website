@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import styles from './about.module.css';
+import { CLIENTS, BRANDS } from '@/lib/siteData';
 
 // SVG components for Values
 const IconOne = () => (
@@ -73,7 +74,7 @@ export default function AboutPage() {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add(styles.active);
+            entry.target.classList.add('revealed');
             observer.unobserve(entry.target);
           }
         });
@@ -84,12 +85,13 @@ export default function AboutPage() {
       }
     );
 
-    const elements = document.querySelectorAll(`.${styles.revealY75}, .${styles.revealY55}, .${styles.revealY50}, .${styles.revealX50}, .${styles.revealOpacity}`);
-    elements.forEach((el) => observer.observe(el));
+    document.querySelectorAll('[data-reveal]').forEach((el) => observer.observe(el));
 
-    // Failsafe — force reveal-in after 3 s if observer fires late
+    // Failsafe — force reveal-in after 3s if observer fires late
     const timer = setTimeout(() => {
-      elements.forEach((el) => el.classList.add(styles.active));
+      document.querySelectorAll('[data-reveal]').forEach((el) => {
+        el.classList.add('revealed');
+      });
     }, 3000);
 
     return () => {
@@ -105,15 +107,38 @@ export default function AboutPage() {
         <div className={styles.fullContainer}>
           <div className={styles.aboutHeroWrap}>
             <div className={styles.aboutHeroHeading}>
-              <h1 className={`${styles.revealY75} ${styles.delay0} ${mounted ? styles.active : ''}`}>
+              <h1 style={{
+                opacity: mounted ? 1 : 0,
+                transform: mounted ? 'translateY(0)' : 'translateY(75px)',
+                transition: 'opacity 880ms cubic-bezier(0.22, 1, 0.36, 1), transform 880ms cubic-bezier(0.22, 1, 0.36, 1)',
+                transitionDelay: '0ms'
+              }}>
                 built to equip india's finest workplaces.
               </h1>
             </div>
-            <div className={`${styles.aboutHeroSubheading} ${styles.revealY75} ${styles.delay200} ${mounted ? styles.active : ''}`}>
+            <div
+              className={styles.aboutHeroSubheading}
+              style={{
+                opacity: mounted ? 1 : 0,
+                transform: mounted ? 'translateY(0)' : 'translateY(75px)',
+                transition: 'opacity 880ms cubic-bezier(0.22, 1, 0.36, 1), transform 880ms cubic-bezier(0.22, 1, 0.36, 1)',
+                transitionDelay: '200ms'
+              }}
+            >
               <div className={styles.aboutHeroDescription}>
                 <p>Nobilitas believes a well-equipped workplace reflects how much an organisation values its people.</p>
               </div>
-              <a href="#story-section">(SCROLL DOWN)</a>
+              <a
+                href="#story-section"
+                style={{
+                  opacity: mounted ? 1 : 0,
+                  transform: mounted ? 'translateY(0)' : 'translateY(75px)',
+                  transition: 'opacity 880ms cubic-bezier(0.22, 1, 0.36, 1), transform 880ms cubic-bezier(0.22, 1, 0.36, 1)',
+                  transitionDelay: '400ms'
+                }}
+              >
+                (SCROLL DOWN)
+              </a>
             </div>
             <div className={styles.aboutHeroImage}>
               <img src="/ref/cta-picture.avif" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }} alt="Hero" />
@@ -133,9 +158,9 @@ export default function AboutPage() {
             <div className={styles.storyContent}>
               <div className={styles.storyLeft}>
                 <div className={styles.storyTitle}>
-                  <h2 className={`${styles.h2SerifLeft} ${styles.revealY55}`}>welcome to nobilitas</h2>
+                  <h2 className={styles.h2SerifLeft} data-reveal="up">welcome to nobilitas</h2>
                 </div>
-                <Link href="/contact" className={`${styles.secondaryButton} ${styles.revealY55} ${styles.delay150}`}>
+                <Link href="/contact" className={styles.secondaryButton} data-reveal="up" data-delay="100">
                   <p className={styles.secondaryButtonText}>CONTACT US</p>
                   <div className={styles.btnIcon}>
                     <div className={styles.btnIconSvg1}><ArrowIcon /></div>
@@ -144,17 +169,17 @@ export default function AboutPage() {
                 </Link>
               </div>
               <div className={styles.storyRight}>
-                <p className={`${styles.storyP} ${styles.revealY55} ${styles.delay150}`}>
+                <p className={styles.storyP} data-reveal="up" data-delay="200">
                   Nobilitas is a premier B2B workplace solutions provider based in Jaipur, Rajasthan. With a curated portfolio of cleaning products, office electronics, furniture, paper goods, and corporate gifting, we help organisations of all sizes maintain seamless, well-equipped operations.
                   <br /><br />
                   Our approach is built on reliability, speed, and genuine partnership. Whether you're stocking a corporate campus or outfitting a new hotel property, we make procurement effortless — one supplier, one quote, one invoice.
                 </p>
                 <div className={styles.storyKeyMetric}>
-                  <div className={`${styles.keyMetricLeft} ${styles.revealY50}`}>
+                  <div className={styles.keyMetricLeft} data-reveal="up" data-delay="100">
                     <h2 className={styles.h2SansLeft}>1,200+</h2>
                     <p className={styles.p1LeftRegularGrey}>Products across 10 categories</p>
                   </div>
-                  <div className={`${styles.keyMetricRight} ${styles.revealY50} ${styles.delay150}`}>
+                  <div className={styles.keyMetricRight} data-reveal="up" data-delay="200">
                     <h2 className={styles.h2SansLeft}>400+</h2>
                     <p className={styles.p1LeftRegularGrey}>Corporate clients pan-India</p>
                   </div>
@@ -174,23 +199,26 @@ export default function AboutPage() {
                 <p className={styles.labelText}>// 02</p>
                 <p className={styles.labelText}>/ Our Clients</p>
               </div>
-              <h2 className={styles.h2SerifLeft}>trusted by hundreds</h2>
-            </div>
-            <div className={styles.partnerContent}>
-              <div className={`${styles.partnerLogo} ${styles.partnerLogoFirst} ${styles.revealOpacity} ${styles.delay0}`}>
-                <span className={styles.partnerLogoText}>TAJ HOTELS</span>
-              </div>
-              <div className={`${styles.partnerLogo} ${styles.revealOpacity} ${styles.delay150}`}>
-                <span className={styles.partnerLogoText}>INFOSYS</span>
-              </div>
-              <div className={`${styles.partnerLogo} ${styles.revealOpacity} ${styles.delay300}`}>
-                <span className={styles.partnerLogoText}>AIIMS</span>
-              </div>
-              <div className={`${styles.partnerLogo} ${styles.revealOpacity} ${styles.delay450}`}>
-                <span className={styles.partnerLogoText}>RELIANCE</span>
-              </div>
+              <h2 className={styles.h2SerifLeft} data-reveal="up">trusted by hundreds</h2>
             </div>
           </div>
+        </div>
+        <div className={styles.clientsGrid}>
+          {CLIENTS.map((client, i) => (
+            <div 
+              key={client.name} 
+              className={styles.clientCell}
+              data-reveal="fade"
+              data-delay={['100', '200', '300'][i % 3]}
+            >
+              {client.name}
+            </div>
+          ))}
+        </div>
+        <div className={styles.container}>
+          <p className={styles.clientsFooterText}>
+            And 400+ more across corporate offices, hospitals, manufacturing units, and hospitality groups across India.
+          </p>
         </div>
       </section>
 
@@ -204,29 +232,29 @@ export default function AboutPage() {
             </div>
             <div className={styles.visionMissionHeading}>
               <div className={styles.visionMissionTitle}>
-                <h2 className={`${styles.h2SerifLeft} ${styles.revealY55}`}>what we truly stand for</h2>
+                <h2 className={styles.h2SerifLeft} data-reveal="up">what we truly stand for</h2>
               </div>
-              <div className={`${styles.visionMissionImage} ${styles.revealOpacity}`}>
+              <div className={styles.visionMissionImage} data-reveal="fade" data-delay="100">
                 <img src="/ref/about.avif" style={{ width: '100%', height: '100%', objectFit: 'cover' }} height="320" alt="Vision" />
               </div>
             </div>
             <div className={styles.visionContent}>
               <div className={styles.visionContentText}>
-                <div className={`${styles.visionLeft} ${styles.revealX50}`}>
+                <div className={styles.visionLeft} data-reveal="right">
                   <div className={styles.visionNumber}><h3 className={styles.h4Left}>1</h3></div>
                   <div className={styles.visionTitleText}><h3 className={styles.h3SansLeftCapitalized}>Our Vision</h3></div>
                 </div>
-                <div className={styles.visionDescription}>
-                  <p className={`${styles.revealX50} ${styles.delay100}`}>To become the most trusted single-source procurement partner for India's offices, hotels, hospitals, and factories.</p>
+                <div className={styles.visionDescription} data-reveal="right" data-delay="100">
+                  <p>To become the most trusted single-source procurement partner for India's offices, hotels, hospitals, and factories.</p>
                 </div>
               </div>
               <div className={styles.missionContentText}>
-                <div className={`${styles.missionLeft} ${styles.revealX50}`}>
+                <div className={styles.missionLeft} data-reveal="right" data-delay="200">
                   <div className={styles.visionNumber}><h3 className={styles.h4Left}>2</h3></div>
                   <div className={styles.visionTitleText}><h3 className={styles.h3SansLeftCapitalized}>Our Mission</h3></div>
                 </div>
-                <div className={styles.missionDescription}>
-                  <p className={`${styles.revealX50} ${styles.delay100}`}>To deliver reliable, quality-vetted workplace supplies with speed and transparency — making procurement feel like one phone call.</p>
+                <div className={styles.missionDescription} data-reveal="right" data-delay="300">
+                  <p>To deliver reliable, quality-vetted workplace supplies with speed and transparency — making procurement feel like one phone call.</p>
                 </div>
               </div>
             </div>
@@ -245,46 +273,46 @@ export default function AboutPage() {
             <div className={styles.valueHeading}>
               <div className={styles.valueTitle}>
                 <div className={styles.valueTitleText}>
-                  <h2 className={styles.h2SerifLeft}>values we are proud of</h2>
+                  <h2 className={styles.h2SerifLeft} data-reveal="up">values we are proud of</h2>
                 </div>
                 <div className={styles.valueDescription}>
                   <p>These principles guide how we source, supply, and serve.</p>
                 </div>
               </div>
-              <div className={styles.valueImage}>
+              <div className={styles.valueImage} data-reveal="fade">
                 <img src="/ref/living-room.avif" style={{ width: '100%', height: '480px', objectFit: 'cover' }} alt="Values" />
               </div>
             </div>
             <div className={styles.valueContent}>
-              <div className={`${styles.valueItem} ${styles.revealX50}`}>
+              <div className={styles.valueItem} data-reveal="right" data-delay="100">
                 <IconOne />
                 <div className={styles.valueTextContent}>
                   <h3 className={styles.h5LeftMediumCapitalized}>ONE PURCHASE ORDER</h3>
                   <p>One inquiry covers all categories. One quote. One invoice. No vendor juggling.</p>
                 </div>
               </div>
-              <div className={`${styles.valueItem} ${styles.revealX50} ${styles.delay100}`}>
+              <div className={styles.valueItem} data-reveal="right" data-delay="200">
                 <IconTwo />
                 <div className={styles.valueTextContent}>
                   <h3 className={styles.h5LeftMediumCapitalized}>FOUR-HOUR RESPONSE</h3>
                   <p>WhatsApp us a list and receive pricing, sourcing, and lead times the same day.</p>
                 </div>
               </div>
-              <div className={`${styles.valueItem} ${styles.revealX50} ${styles.delay200}`}>
+              <div className={styles.valueItem} data-reveal="right" data-delay="300">
                 <IconThree />
                 <div className={styles.valueTextContent}>
                   <h3 className={styles.h5LeftMediumCapitalized}>VERIFIED BRANDS ONLY</h3>
                   <p>Diversey, 3M, Godrej Interio, Kimberly-Clark, Philips — vetted on quality and compliance.</p>
                 </div>
               </div>
-              <div className={`${styles.valueItem} ${styles.revealX50}`}>
+              <div className={styles.valueItem} data-reveal="right" data-delay="100">
                 <IconFour />
                 <div className={styles.valueTextContent}>
                   <h3 className={styles.h5LeftMediumCapitalized}>PAN-INDIA DELIVERY</h3>
                   <p>26 states covered from our Jaipur warehouse. Same reliability everywhere.</p>
                 </div>
               </div>
-              <div className={`${styles.valueItem} ${styles.revealX50} ${styles.delay100}`}>
+              <div className={styles.valueItem} data-reveal="right" data-delay="200">
                 <IconFive />
                 <div className={styles.valueTextContent}>
                   <h3 className={styles.h5LeftMediumCapitalized}>ENTERPRISE READY</h3>
@@ -296,18 +324,56 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* BRANDS SECTION */}
+      <section className={styles.brandsSection}>
+        <div className={styles.container}>
+          <div className={styles.brandsHeader}>
+            <div className={styles.brandsHeaderLeft}>
+              <div className={styles.label}>
+                <p className={styles.labelText}>// 05</p>
+                <p className={styles.labelText}>/ Brands we work with</p>
+              </div>
+              <h2 className={styles.brandsH2} data-reveal="up">sourced from the best.</h2>
+            </div>
+            <p className={styles.brandsDesc} data-reveal="up" data-delay="100">
+              Every product in our catalog is sourced from manufacturers vetted on quality, compliance, and post-sale support. No compromises — only brands we would stake our name on.
+            </p>
+          </div>
+        </div>
+        <div className={styles.brandsGrid}>
+          {BRANDS.map((brand, i) => (
+            <div
+              key={brand.name}
+              className={styles.brandCard}
+              data-reveal="up"
+              data-delay={["100", "200", "300", "400"][i % 4]}
+            >
+              <div className={styles.brandLine}></div>
+              <h3 className={styles.brandName}>{brand.name}</h3>
+              <p className={styles.brandCat}>{brand.category}</p>
+            </div>
+          ))}
+        </div>
+        <div className={styles.brandsFooter}>
+          <p>
+            And 50+ more partner brands across all categories.
+            <Link href="/catalog" style={{ color: 'var(--gold)', marginLeft: '6px' }}>Browse the catalog →</Link>
+          </p>
+        </div>
+      </section>
+
       {/* MILESTONE SECTION */}
       <section className={styles.milestoneSection}>
         <div className={styles.container}>
           <div className={styles.milestoneWrap}>
             <div className={styles.label}>
-              <p className={styles.labelText}>// 05</p>
+              <p className={styles.labelText}>// 06</p>
               <p className={styles.labelText}>/ Milestone</p>
             </div>
             <div className={styles.milestoneContent}>
               <div className={styles.milestoneTitle}>
-                <h2 className={styles.h2SerifLeft}>our journey</h2>
-                <p>A timeline of growth and commitment to India's workplaces.</p>
+                <h2 className={styles.h2SerifLeft} data-reveal="up">our journey</h2>
+                <p data-reveal="up" data-delay="100">A timeline of growth and commitment to India's workplaces.</p>
               </div>
               <div className={styles.milestoneContentBottom}>
                 <div className={styles.milestoneListing}>
@@ -318,8 +384,8 @@ export default function AboutPage() {
                     { year: '2020', title: 'pan-india logistics', desc: 'Delivery network built across 26 states.' },
                     { year: '2023', title: '400+ active clients', desc: 'Across corporate, hospitality, and healthcare.' },
                     { year: '2026', title: 'nobilitas.in launched', desc: 'The digital catalog goes live.' },
-                  ].map(m => (
-                    <div className={`${styles.journeyList} ${styles.revealY50}`} key={m.year}>
+                  ].map((m, i) => (
+                    <div className={styles.journeyList} key={m.year} data-reveal="up" data-delay={['100', '200', '300'][i % 3]}>
                       <div className={styles.journeyYear}>
                         <div className={styles.journeySquare}></div>
                         <h3 className={styles.h3SansLeft}>{m.year}</h3>
@@ -331,7 +397,7 @@ export default function AboutPage() {
                     </div>
                   ))}
                 </div>
-                <div className={styles.milestoneImage}>
+                <div className={styles.milestoneImage} data-reveal="fade" data-delay="200">
                   <img src="/ref/metric.avif" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Our Journey" />
                 </div>
               </div>
@@ -344,11 +410,11 @@ export default function AboutPage() {
       <section className={styles.teamsSection}>
         <div className={styles.container}>
           <div className={styles.label}>
-            <p className={styles.labelText}>// 06</p>
+            <p className={styles.labelText}>// 07</p>
             <p className={styles.labelText}>/ Our Team</p>
           </div>
           <div className={styles.teamsHeading}>
-            <h2 className={styles.h2SerifLeft}>meet our team</h2>
+            <h2 className={styles.h2SerifLeft} data-reveal="up">meet our team</h2>
           </div>
           <div className={styles.meetTeamItems}>
             {[
@@ -359,7 +425,7 @@ export default function AboutPage() {
               { id: '005', name: 'Vikram Singh', role: 'Catalog & Sourcing', tone: styles.toneWarm },
               { id: '006', name: 'Ananya Rao', role: 'Client Experience', tone: styles.toneDefault },
             ].map((member, i) => (
-              <div className={`${styles.teamCard} ${styles.revealY50} ${styles[`delay${(i % 3) * 100}`]}`} key={member.id}>
+              <div className={styles.teamCard} key={member.id} data-reveal="up" data-delay={['100', '200', '300'][i % 3]}>
                 <div className={`${styles.teamImage} ${member.tone}`}>
                   <p className={styles.teamImageText}>Placeholder</p>
                 </div>
@@ -380,12 +446,12 @@ export default function AboutPage() {
       <section className={styles.ctaAboutImageSection}>
         <div className={styles.ctaAboutImageWrap}>
           <div className={styles.ctaAboutHeading}>
-            <h1 className={`${styles.h1LeftRegularWhite} ${styles.revealY75}`}>ready to equip your workplace?</h1>
-            <div className={`${styles.ctaAboutSubheading} ${styles.revealY75} ${styles.delay100}`}>
+            <h1 className={styles.h1LeftRegularWhite} data-reveal="up">ready to equip your workplace?</h1>
+            <div className={styles.ctaAboutSubheading} data-reveal="up" data-delay="100">
               <p>Find the right supplier for cleaning, furniture, electronics, and everything else your organisation needs.</p>
             </div>
           </div>
-          <Link href="/catalog" className={`${styles.primaryButton} ${styles.revealY75} ${styles.delay200}`}>
+          <Link href="/catalog" className={styles.primaryButton} data-reveal="up" data-delay="200">
             <div className={styles.primaryBtnTextWrap}>
               <p className={styles.primaryBtnText}>START BROWSING</p>
               <p className={`${styles.primaryBtnText} ${styles.hover}`}>START BROWSING</p>
