@@ -42,8 +42,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html
       lang="en"
       className={`${playfair.variable} ${inter.variable} ${jetbrainsMono.variable}`}
+      suppressHydrationWarning
     >
-      <body>
+      <body suppressHydrationWarning>
         <Header />
         {children}
         <Footer />

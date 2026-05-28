@@ -83,3 +83,8 @@ $RECYCLE.BIN/
 *.log
 *.tmp
 *.temp
+
+decorist_furniture.webflow.io/
+graphify-out/
+.agents/
+supabase/

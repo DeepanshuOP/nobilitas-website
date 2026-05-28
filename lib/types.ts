@@ -86,7 +86,7 @@ export type CreateProductInput = Omit<Product, 'id' | 'created_at' | 'updated_at
  * without a second client-side lookup.
  */
 export interface ProductWithCategory extends Product {
-  categories: { name: string } | null; // nullable when category_id FK has no match
+  categories: { name: string; slug?: string; icon_name?: string } | null;
 }
 
 // ==========================================

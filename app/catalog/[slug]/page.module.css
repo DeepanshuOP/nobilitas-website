@@ -71,6 +71,15 @@
   justify-content: center;
 }
 
+.hasImage::before {
+  display: none !important;
+  opacity: 0 !important;
+}
+
+.hasImage .jaliOverlay {
+  display: none;
+}
+
 .skuTag {
   position: absolute;
   top: 14px;

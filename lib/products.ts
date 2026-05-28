@@ -1,3 +1,6 @@
+// NOTE: This file is kept as reference data only.
+// The live frontend reads from Supabase. See lib/supabase/.
+
 export type ProductTone = 'warm' | 'deep' | 'default' | 'sage' | 'cocoa';
 
 export type ProductCategory =

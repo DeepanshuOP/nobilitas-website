@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { createClient } from '@/lib/supabase/client';
+import { CreateInquiryInput } from '@/lib/types';
 import styles from './contact.module.css';
 
 export default function ContactPage() {
@@ -14,6 +16,7 @@ export default function ContactPage() {
 
   const [submitting, setSubmitting] = useState(false);
   const [sent, setSent] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
   // Reveal animation observer
   useEffect(() => {
@@ -45,13 +48,40 @@ export default function ContactPage() {
     };
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
-    setTimeout(() => {
+    setErrorMsg('');
+
+    const supabase = createClient();
+    
+    let sourceMapped = 'other';
+    if (source === 'Google search') sourceMapped = 'google';
+    if (source === 'WhatsApp referral') sourceMapped = 'whatsapp_referral';
+    if (source === 'Existing client') sourceMapped = 'existing_client';
+    if (source === 'Trade directory') sourceMapped = 'trade_directory';
+
+    const inquiryData: CreateInquiryInput = {
+      name,
+      company,
+      email,
+      phone,
+      message,
+      source: sourceMapped,
+      product_id: null,
+      products_interested: '',
+      quantity: '',
+    };
+
+    const { error } = await supabase.from('inquiries').insert([inquiryData]);
+
+    setSubmitting(false);
+
+    if (error) {
+      setErrorMsg('Something went wrong. Please try WhatsApp instead.');
+    } else {
       setSent(true);
-      setSubmitting(false);
-    }, 600);
+    }
   };
 
   return (
@@ -245,6 +275,11 @@ export default function ContactPage() {
                   >
                     {submitting ? 'Sending…' : <>Send inquiry <span className="arrow">↗</span></>}
                   </button>
+                  {errorMsg && (
+                    <p style={{ fontFamily: 'var(--sans)', fontSize: '13px', color: '#a1352a', marginTop: '12px', textAlign: 'center' }}>
+                      {errorMsg}
+                    </p>
+                  )}
                 </form>
               )}
             </div>
