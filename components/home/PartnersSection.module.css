@@ -8,26 +8,91 @@
 .partnersHead .left :global(.h-section) { margin-top: 28px; }
 .partnersHead .right { max-width: 440px; padding-bottom: 8px; }
 
-.partnersStrip {
+.marqueeOuter {
+  overflow: hidden;
+  width: 100%;
   border-top: 1px solid var(--border-light);
   border-bottom: 1px solid var(--border-light);
   padding: 44px 0;
+  /* Fade edges */
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+}
+
+.marqueeTrack {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: clamp(20px, 3vw, 40px);
+  gap: 80px;
+  width: max-content;
+  animation: marquee 28s linear infinite;
+  will-change: transform;
 }
-.partner {
+
+/* Pause on hover — gives users time to read */
+.marqueeOuter:hover .marqueeTrack {
+  animation-play-state: paused;
+}
+
+.partnerName {
   font-family: var(--serif);
-  font-size: clamp(20px, 1.8vw, 26px);
-  letter-spacing: 0.06em;
+  font-size: clamp(18px, 1.6vw, 24px);
+  letter-spacing: 0.08em;
   color: var(--fg-3);
   opacity: 0.55;
-  transition: opacity 280ms var(--ease-out), color 280ms var(--ease-out);
+  white-space: nowrap;
   text-transform: uppercase;
+  transition: opacity 280ms var(--ease-out), color 280ms var(--ease-out);
+  cursor: default;
+  user-select: none;
 }
-.partner:hover { opacity: 1; color: var(--fg-1); }
+
+.partnerName:hover {
+  opacity: 1;
+  color: var(--fg-1);
+}
+
+/* Separator dot between names */
+.partnerName::after {
+  content: '·';
+  margin-left: 80px;
+  opacity: 0.3;
+  font-size: 20px;
+  vertical-align: middle;
+}
+
+/* Remove dot after last item in each set */
+.partnerName:nth-child(8)::after,
+.partnerName:nth-child(16)::after {
+  display: none;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .marqueeTrack {
+    animation: none;
+  }
+  .marqueeOuter {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+}
 
 @media (max-width: 980px) {
   .partnersHead { grid-template-columns: 1fr; gap: 28px; }

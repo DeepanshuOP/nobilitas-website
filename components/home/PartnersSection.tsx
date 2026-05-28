@@ -1,6 +1,9 @@
 import styles from './PartnersSection.module.css';
 
-const PARTNERS = ['Taj Hotels', 'Infosys', 'AIIMS', 'Reliance', 'Oberoi', 'Tata', 'ITC', 'Marriott'] as const;
+const PARTNERS = [
+  'TAJ HOTELS', 'INFOSYS', 'AIIMS', 'RELIANCE',
+  'OBEROI', 'TATA', 'ITC', 'MARRIOTT'
+] as const;
 
 export default function PartnersSection() {
   return (
@@ -22,10 +25,17 @@ export default function PartnersSection() {
             </p>
           </div>
         </div>
-        <div className={`${styles.partnersStrip} reveal-up`}>
-          {PARTNERS.map((p) => (
-            <span key={p} className={styles.partner}>{p}</span>
-          ))}
+        <div className={`${styles.marqueeOuter} reveal-up`}>
+          <div className={styles.marqueeTrack}>
+            {/* First set */}
+            {PARTNERS.map((name, i) => (
+              <span key={`a-${i}`} className={styles.partnerName}>{name}</span>
+            ))}
+            {/* Exact duplicate for seamless loop */}
+            {PARTNERS.map((name, i) => (
+              <span key={`b-${i}`} className={styles.partnerName} aria-hidden="true">{name}</span>
+            ))}
+          </div>
         </div>
       </div>
     </section>
