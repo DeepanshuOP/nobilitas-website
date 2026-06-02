@@ -2,6 +2,22 @@ import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 import { Inquiry } from '@/lib/types';
 
+// ─── Design tokens ────────────────────────────────────────────────────────────
+
+const T = {
+  bg: '#0f0f0f',
+  surface: '#161616',
+  elevated: '#1c1c1c',
+  border: 'rgba(245,241,234,0.08)',
+  borderGold: 'rgba(201,169,110,0.28)',
+  fg1: '#f5f1ea',
+  fg2: '#c9c0a8',
+  fg3: '#8a8a8a',
+  gold: '#c9a96e',
+  serif: "'Playfair Display', Georgia, serif",
+  sans: "'Inter', system-ui, sans-serif",
+} as const;
+
 /**
  * Server-Side Dashboard Home Component.
  * Fetches metrics in parallel and displays them alongside recent inquiries.
@@ -58,74 +74,147 @@ export default async function AdminDashboardPage() {
   ];
 
   return (
-    <div className="font-sans text-[#f5f1ea]">
-      {/* Page Header */}
-      <header className="mb-8">
-        <h1 className="text-[1.5rem] font-semibold text-[#f5f1ea] tracking-wide">
+    <div style={{ fontFamily: T.sans, color: T.fg1 }}>
+      {/* ── Page Header ── */}
+      <header style={{ marginBottom: 32 }}>
+        <h1
+          style={{
+            fontFamily: T.serif,
+            fontSize: 30,
+            fontWeight: 700,
+            color: T.fg1,
+            margin: 0,
+          }}
+        >
           Dashboard
         </h1>
-        <p className="text-[0.85rem] text-[#8a8a8a] mt-1 font-medium">
-          Welcome back. Here's what's happening.
+        <p
+          style={{
+            fontFamily: T.sans,
+            fontSize: 14,
+            color: T.fg3,
+            marginTop: 6,
+            marginBottom: 0,
+          }}
+        >
+          Welcome back. Here&apos;s what&apos;s happening.
         </p>
       </header>
 
-      {/* KPI Stats Grid */}
-      <section className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-10">
+      {/* ── KPI Stats Grid ── */}
+      <section
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+          gap: 20,
+          marginTop: 32,
+          marginBottom: 40,
+        }}
+      >
         {statCards.map((card, index) => (
           <div
             key={index}
-            className="bg-[#161616] border border-[rgba(245,241,234,0.08)] rounded-lg p-6 shadow-sm hover:border-[rgba(201,169,110,0.28)] transition-colors"
+            style={{
+              background: T.surface,
+              border: `1px solid ${T.border}`,
+              borderRadius: 10,
+              padding: 28,
+            }}
           >
-            <h3 className="text-[0.7rem] text-[#8a8a8a] tracking-[0.12em] font-medium uppercase mb-2">
-              {card.label}
-            </h3>
-            <p className="text-[#c9a96e] text-[2rem] font-bold tracking-tight">
+            <p
+              style={{
+                fontFamily: T.serif,
+                fontSize: 40,
+                fontWeight: 700,
+                color: T.fg1,
+                lineHeight: 1,
+                margin: 0,
+              }}
+            >
               {card.count}
             </p>
-            <span className="text-[0.75rem] text-[#8a8a8a] block mt-1 font-medium">
-              {card.sublabel}
-            </span>
+            <p
+              style={{
+                fontFamily: T.sans,
+                fontSize: 11,
+                textTransform: 'uppercase',
+                letterSpacing: '0.15em',
+                color: T.fg3,
+                marginTop: 10,
+                marginBottom: 0,
+              }}
+            >
+              {card.label}
+            </p>
           </div>
         ))}
       </section>
 
-      {/* Recent Inquiries Section */}
-      <section className="mb-10">
-        <h2 className="text-[1rem] font-semibold text-[#f5f1ea] mb-4 tracking-wide">
+      {/* ── Recent Inquiries Section ── */}
+      <section style={{ marginBottom: 40 }}>
+        <h2
+          style={{
+            fontFamily: T.serif,
+            fontSize: 20,
+            fontWeight: 700,
+            color: T.fg1,
+            margin: '0 0 16px',
+          }}
+        >
           Recent Inquiries
         </h2>
 
-        <div className="bg-[#161616] rounded-lg border border-[rgba(245,241,234,0.08)] overflow-hidden shadow-sm">
+        <div
+          style={{
+            background: T.surface,
+            borderRadius: 10,
+            border: `1px solid ${T.border}`,
+            overflow: 'hidden',
+          }}
+        >
           {recentInquiries.length > 0 ? (
-            <div className="overflow-x-auto w-full">
-              <table className="w-full border-collapse text-left">
+            <div style={{ overflowX: 'auto' }}>
+              <table
+                style={{
+                  width: '100%',
+                  borderCollapse: 'collapse',
+                  textAlign: 'left',
+                  fontSize: 13,
+                  fontFamily: T.sans,
+                }}
+              >
                 <thead>
-                  <tr className="bg-[#161616] border-b border-[rgba(245,241,234,0.08)]">
-                    <th className="text-[0.7rem] text-[#8a8a8a] tracking-[0.1em] font-bold uppercase p-3 lg:p-4">
-                      Name
-                    </th>
-                    <th className="text-[0.7rem] text-[#8a8a8a] tracking-[0.1em] font-bold uppercase p-3 lg:p-4">
-                      Company
-                    </th>
-                    <th className="text-[0.7rem] text-[#8a8a8a] tracking-[0.1em] font-bold uppercase p-3 lg:p-4">
-                      Phone
-                    </th>
-                    <th className="text-[0.7rem] text-[#8a8a8a] tracking-[0.1em] font-bold uppercase p-3 lg:p-4">
-                      Status
-                    </th>
-                    <th className="text-[0.7rem] text-[#8a8a8a] tracking-[0.1em] font-bold uppercase p-3 lg:p-4">
-                      Date
-                    </th>
+                  <tr style={{ borderBottom: `1px solid ${T.border}` }}>
+                    {['Name', 'Company', 'Phone', 'Status', 'Date'].map((h) => (
+                      <th
+                        key={h}
+                        style={{
+                          textAlign: 'left',
+                          padding: '12px 16px',
+                          fontSize: 10,
+                          fontWeight: 500,
+                          letterSpacing: '0.18em',
+                          textTransform: 'uppercase',
+                          color: T.fg3,
+                          borderBottom: `1px solid ${T.border}`,
+                        }}
+                      >
+                        {h}
+                      </th>
+                    ))}
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[rgba(245,241,234,0.08)]">
+                <tbody>
                   {recentInquiries.map((inquiry) => {
                     // Dynamic badge rendering configuration based on status
-                    let badgeStyles = 'bg-[rgba(245,241,234,0.06)] text-[#8a8a8a]';
+                    let badgeColor: string = T.fg3;
+                    let badgeBg: string = 'rgba(245,241,234,0.06)';
                     if (inquiry.status === 'new') {
-                      badgeStyles = 'bg-[rgba(201,169,110,0.15)] text-[#c9a96e]';
+                      badgeColor = T.gold;
+                      badgeBg = 'rgba(201,169,110,0.15)';
                     } else if (inquiry.status === 'responded') {
-                      badgeStyles = 'bg-[rgba(74,222,128,0.1)] text-[#4ade80]';
+                      badgeColor = '#4ade80';
+                      badgeBg = 'rgba(74,222,128,0.1)';
                     }
 
                     const dateString = new Date(inquiry.created_at).toLocaleDateString('en-IN', {
@@ -137,17 +226,37 @@ export default async function AdminDashboardPage() {
                     return (
                       <tr
                         key={inquiry.id}
-                        className="hover:bg-[rgba(245,241,234,0.02)] transition-colors text-[0.82rem] text-[#c9c0a8]"
+                        style={{ borderBottom: `1px solid rgba(245,241,234,0.06)` }}
                       >
-                        <td className="p-3 lg:p-4 font-medium">{inquiry.name}</td>
-                        <td className="p-3 lg:p-4">{inquiry.company || '—'}</td>
-                        <td className="p-3 lg:p-4 tracking-wider">{inquiry.phone}</td>
-                        <td className="p-3 lg:p-4">
-                          <span className={`inline-block px-2.5 py-1 rounded text-[0.7rem] font-bold tracking-wide uppercase ${badgeStyles}`}>
+                        <td style={{ padding: '14px 16px', fontSize: 13, color: T.fg2, fontWeight: 500 }}>
+                          {inquiry.name}
+                        </td>
+                        <td style={{ padding: '14px 16px', fontSize: 13, color: T.fg2 }}>
+                          {inquiry.company || '—'}
+                        </td>
+                        <td style={{ padding: '14px 16px', fontSize: 13, color: T.fg2, fontFamily: 'monospace' }}>
+                          {inquiry.phone}
+                        </td>
+                        <td style={{ padding: '14px 16px' }}>
+                          <span
+                            style={{
+                              display: 'inline-block',
+                              padding: '3px 10px',
+                              borderRadius: 9999,
+                              fontSize: 10,
+                              fontWeight: 700,
+                              letterSpacing: '0.08em',
+                              textTransform: 'uppercase',
+                              color: badgeColor,
+                              backgroundColor: badgeBg,
+                            }}
+                          >
                             {inquiry.status}
                           </span>
                         </td>
-                        <td className="p-3 lg:p-4 text-[#8a8a8a]">{dateString}</td>
+                        <td style={{ padding: '14px 16px', fontSize: 13, color: T.fg3 }}>
+                          {dateString}
+                        </td>
                       </tr>
                     );
                   })}
@@ -155,34 +264,75 @@ export default async function AdminDashboardPage() {
               </table>
             </div>
           ) : (
-            <div className="text-center py-12">
-              <p className="text-[0.9rem] text-[#8a8a8a] font-medium">No inquiries yet.</p>
+            <div style={{ textAlign: 'center', padding: '48px 20px' }}>
+              <p style={{ fontSize: 14, color: T.fg3, fontFamily: T.sans }}>No inquiries yet.</p>
             </div>
           )}
         </div>
       </section>
 
-      {/* Quick Actions Block */}
+      {/* ── Quick Actions Block ── */}
       <section>
-        <h2 className="text-[1rem] font-semibold text-[#f5f1ea] mb-4 tracking-wide">
+        <h2
+          style={{
+            fontFamily: T.serif,
+            fontSize: 20,
+            fontWeight: 700,
+            color: T.fg1,
+            margin: '0 0 16px',
+          }}
+        >
           Quick Actions
         </h2>
-        <div className="flex flex-wrap gap-3">
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
           <Link
             href="/admin/products/new"
-            className="inline-block bg-[#161616] border border-[rgba(245,241,234,0.08)] text-[#c9a96e] px-6 py-3 rounded text-[0.8rem] font-medium transition-all hover:border-[#c9a96e] hover:bg-[rgba(201,169,110,0.02)] active:scale-[0.98]"
+            style={{
+              display: 'inline-block',
+              background: T.surface,
+              border: `1px solid ${T.border}`,
+              color: T.gold,
+              padding: '12px 24px',
+              borderRadius: 6,
+              fontSize: 13,
+              fontWeight: 500,
+              textDecoration: 'none',
+              fontFamily: T.sans,
+            }}
           >
             Add Product
           </Link>
           <Link
             href="/admin/categories"
-            className="inline-block bg-[#161616] border border-[rgba(245,241,234,0.08)] text-[#c9a96e] px-6 py-3 rounded text-[0.8rem] font-medium transition-all hover:border-[#c9a96e] hover:bg-[rgba(201,169,110,0.02)] active:scale-[0.98]"
+            style={{
+              display: 'inline-block',
+              background: T.surface,
+              border: `1px solid ${T.border}`,
+              color: T.gold,
+              padding: '12px 24px',
+              borderRadius: 6,
+              fontSize: 13,
+              fontWeight: 500,
+              textDecoration: 'none',
+              fontFamily: T.sans,
+            }}
           >
             Add Category
           </Link>
           <Link
             href="/admin/inquiries"
-            className="inline-block bg-[#161616] border border-[rgba(245,241,234,0.08)] text-[#c9a96e] px-6 py-3 rounded text-[0.8rem] font-medium transition-all hover:border-[#c9a96e] hover:bg-[rgba(201,169,110,0.02)] active:scale-[0.98]"
+            style={{
+              display: 'inline-block',
+              background: T.surface,
+              border: `1px solid ${T.border}`,
+              color: T.gold,
+              padding: '12px 24px',
+              borderRadius: 6,
+              fontSize: 13,
+              fontWeight: 500,
+              textDecoration: 'none',
+              fontFamily: T.sans,
+            }}
           >
             View Inquiries
           </Link>

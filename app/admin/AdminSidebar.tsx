@@ -2,33 +2,54 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+import { useState } from 'react';
 import {
   LayoutDashboard,
   Package,
-  Grid3x3,
+  Grid3X3,
   MessageSquare,
   Settings,
+  ExternalLink,
   LogOut,
 } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 
+// ─── Design tokens ────────────────────────────────────────────────────────────
+const T = {
+  bg: '#0d0d0d',
+  border: 'rgba(245,241,234,0.08)',
+  gold: '#c9a96e',
+  fg1: '#f5f1ea',
+  fg2: '#c9c0a8',
+  fg3: '#8a8a8a',
+  activeBg: 'rgba(201,169,110,0.12)',
+  hoverBg: 'rgba(245,241,234,0.04)',
+  sans: "'Inter', system-ui, sans-serif",
+  serif: "'Playfair Display', Georgia, serif",
+} as const;
+
+const navItems = [
+  { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
+  { name: 'Products', href: '/admin/products', icon: Package },
+  { name: 'Categories', href: '/admin/categories', icon: Grid3X3 },
+  { name: 'Inquiries', href: '/admin/inquiries', icon: MessageSquare },
+  { name: 'Settings', href: '/admin/settings', icon: Settings },
+];
+
+/**
+ * WHY null on login: the login page uses the full viewport without a sidebar.
+ * Returning null avoids rendering the sidebar DOM entirely; the admin layout's
+ * marginLeft remains but the page overrides it via a <style> injection in the
+ * old code — here we simply return null for the sidebar only, keeping login
+ * full-bleed without over-engineering a second layout file.
+ */
 export default function AdminSidebar() {
   const pathname = usePathname();
   const router = useRouter();
   const supabase = createClient();
 
-  // If user is on the login page, sidebar is hidden entirely
-  if (pathname === '/admin/login') {
-    return null;
-  }
-
-  const navItems = [
-    { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
-    { name: 'Products', href: '/admin/products', icon: Package },
-    { name: 'Categories', href: '/admin/categories', icon: Grid3x3 },
-    { name: 'Inquiries', href: '/admin/inquiries', icon: MessageSquare },
-    { name: 'Settings', href: '/admin/settings', icon: Settings },
-  ];
+  // If on the login page, suppress the sidebar completely
+  if (pathname === '/admin/login') return null;
 
   const handleSignOut = async () => {
     try {
@@ -40,69 +61,190 @@ export default function AdminSidebar() {
   };
 
   return (
-    <aside className="fixed left-0 top-0 z-40 flex h-screen w-[220px] flex-col justify-between border-r border-[rgba(245,241,234,0.08)] bg-[#161616] py-6 font-sans">
-      <div>
-        {/* Brand/Logo */}
-        <div className="px-6 mb-8">
-          <Link href="/admin/dashboard" className="text-xl font-bold tracking-[0.2em] text-[#c9a96e] hover:opacity-90">
-            NOBILITAS
-          </Link>
-        </div>
-
-        {/* Navigation Items */}
-        <nav className="space-y-1 px-3">
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            // Check if active (matches path exactly or acts as subpath parent)
-            const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
-
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`flex items-center gap-3 px-4 py-2.5 rounded text-[0.78rem] tracking-[0.08em] font-medium transition-all ${
-                  isActive
-                    ? 'bg-[rgba(201,169,110,0.1)] text-[#c9a96e]'
-                    : 'text-[#8a8a8a] hover:bg-[rgba(245,241,234,0.02)] hover:text-[#c9c0a8]'
-                }`}
-              >
-                <Icon className="h-4 w-4 shrink-0" />
-                {item.name}
-              </Link>
-            );
-          })}
-        </nav>
+    <aside
+      style={{
+        position: 'fixed',
+        left: 0,
+        top: 0,
+        bottom: 0,
+        width: 240,
+        background: T.bg,
+        borderRight: `1px solid ${T.border}`,
+        display: 'flex',
+        flexDirection: 'column',
+        padding: '28px 0',
+        zIndex: 50,
+      }}
+    >
+      {/* ── Brand block ── */}
+      <div
+        style={{
+          padding: '0 24px 28px',
+          borderBottom: `1px solid ${T.border}`,
+        }}
+      >
+        <Link
+          href="/admin/dashboard"
+          style={{ textDecoration: 'none' }}
+        >
+          <span
+            style={{
+              display: 'block',
+              fontFamily: T.serif,
+              fontSize: 22,
+              fontWeight: 700,
+              color: T.gold,
+              letterSpacing: '-0.01em',
+            }}
+          >
+            nobilitas
+          </span>
+          <span
+            style={{
+              display: 'block',
+              fontFamily: T.sans,
+              fontSize: 10,
+              letterSpacing: '0.18em',
+              textTransform: 'uppercase',
+              color: T.fg3,
+              marginTop: 4,
+            }}
+          >
+            Ventures LLP · Admin
+          </span>
+        </Link>
       </div>
 
-      {/* Bottom Sign Out */}
-      <div className="px-3">
-        <button
-          onClick={handleSignOut}
-          className="flex w-full items-center gap-3 px-4 py-2.5 rounded text-[0.78rem] tracking-[0.08em] font-medium text-[#8a8a8a] hover:bg-[rgba(245,241,234,0.02)] hover:text-[#c9c0a8] transition-all cursor-pointer text-left"
-        >
-          <LogOut className="h-4 w-4 shrink-0" />
-          Sign Out
-        </button>
+      {/* ── Navigation ── */}
+      <nav
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 4,
+          padding: '24px 12px',
+          flex: 1,
+        }}
+      >
+        {navItems.map((item) => {
+          const Icon = item.icon;
+          const isActive =
+            pathname === item.href || pathname.startsWith(item.href + '/');
+          return (
+            <NavItem
+              key={item.href}
+              href={item.href}
+              isActive={isActive}
+              icon={<Icon size={16} />}
+              label={item.name}
+            />
+          );
+        })}
+      </nav>
+
+      {/* ── Bottom block ── */}
+      <div
+        style={{
+          marginTop: 'auto',
+          padding: '0 12px',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 4,
+          borderTop: `1px solid ${T.border}`,
+          paddingTop: 16,
+        }}
+      >
+        <NavItem
+          href="/"
+          isActive={false}
+          icon={<ExternalLink size={16} />}
+          label="View public site ↗"
+          target="_blank"
+        />
+        <SignOutButton onSignOut={handleSignOut} />
       </div>
     </aside>
   );
 }
 
-/**
- * Client-side layout main container wrapper.
- * Dynamically shifts margin of the content area when on `/admin/login` route.
- */
-export function AdminMainContent({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname();
-  const isLoginPage = pathname === '/admin/login';
+// ─── NavItem ──────────────────────────────────────────────────────────────────
+
+interface NavItemProps {
+  href: string;
+  isActive: boolean;
+  icon: React.ReactNode;
+  label: string;
+  target?: string;
+}
+
+function NavItem({ href, isActive, icon, label, target }: NavItemProps) {
+  const [hovered, setHovered] = useState(false);
+
+  const style: React.CSSProperties = {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 12,
+    padding: '11px 16px',
+    borderRadius: 8,
+    fontFamily: "'Inter', system-ui, sans-serif",
+    fontSize: 14,
+    fontWeight: 500,
+    textDecoration: 'none',
+    transition: 'all 180ms',
+    background: isActive
+      ? 'rgba(201,169,110,0.12)'
+      : hovered
+        ? 'rgba(245,241,234,0.04)'
+        : 'transparent',
+    color: isActive ? '#c9a96e' : hovered ? '#c9c0a8' : '#8a8a8a',
+  };
 
   return (
-    <main
-      className={`flex-1 min-h-screen bg-[#0f0f0f] p-8 transition-all duration-200 ${
-        isLoginPage ? 'ml-0' : 'ml-[220px]'
-      }`}
+    <Link
+      href={href}
+      target={target}
+      style={style}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
     >
-      {children}
-    </main>
+      {icon}
+      {label}
+    </Link>
+  );
+}
+
+// ─── SignOutButton ─────────────────────────────────────────────────────────────
+
+function SignOutButton({ onSignOut }: { onSignOut: () => void }) {
+  const [hovered, setHovered] = useState(false);
+
+  const style: React.CSSProperties = {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 12,
+    padding: '11px 16px',
+    borderRadius: 8,
+    fontFamily: "'Inter', system-ui, sans-serif",
+    fontSize: 14,
+    fontWeight: 500,
+    background: 'none',
+    border: 'none',
+    width: '100%',
+    cursor: 'pointer',
+    textAlign: 'left',
+    transition: 'all 180ms',
+    color: hovered ? '#c9c0a8' : '#8a8a8a',
+    backgroundColor: hovered ? 'rgba(245,241,234,0.04)' : 'transparent',
+  };
+
+  return (
+    <button
+      style={style}
+      onClick={onSignOut}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <LogOut size={16} />
+      Sign Out
+    </button>
   );
 }

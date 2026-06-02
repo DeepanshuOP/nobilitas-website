@@ -74,7 +74,7 @@ const GROUPS: GroupDef[] = [
       {
         key: 'contact_phone',
         label: 'Phone Number',
-        placeholder: '+91 98765 43210',
+        placeholder: '+91 93140 93160',
       },
       {
         key: 'contact_email',
@@ -84,7 +84,7 @@ const GROUPS: GroupDef[] = [
       {
         key: 'whatsapp_number',
         label: 'WhatsApp Number',
-        placeholder: '919876543210 (10–12 digits, no spaces)',
+        placeholder: '919314093160 (10–12 digits, no spaces)',
       },
     ],
   },

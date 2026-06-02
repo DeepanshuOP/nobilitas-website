@@ -1,9 +1,7 @@
 import type { Metadata } from 'next';
 import { Playfair_Display, Inter, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
-import Header from '@/components/layout/Header/Header';
-import Footer from '@/components/layout/Footer/Footer';
-import WhatsAppFab from '@/components/layout/WhatsAppFab/WhatsAppFab';
+import PublicChrome from '@/components/layout/PublicChrome';
 
 /* ── Fonts ───────────────────────────────────────────────────────────────── */
 const playfair = Playfair_Display({
@@ -46,10 +44,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       suppressHydrationWarning
     >
       <body suppressHydrationWarning>
-        <Header />
-        {children}
-        <Footer />
-        <WhatsAppFab />
+        <PublicChrome>{children}</PublicChrome>
       </body>
     </html>
   );

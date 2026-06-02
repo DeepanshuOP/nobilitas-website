@@ -85,6 +85,123 @@ function Toast({ messages }: { messages: ToastMessage[] }) {
   );
 }
 
+// ─── Table row ────────────────────────────────────────────────────────────────
+
+interface TableRowProps {
+  cat: Category;
+  onEdit: () => void;
+  onDelete: () => void;
+  onToggle: () => void;
+}
+
+function TableRow({ cat, onEdit, onDelete, onToggle }: TableRowProps) {
+  const [hovered, setHovered] = useState(false);
+
+  return (
+    <tr
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        borderBottom: '1px solid rgba(245,241,234,0.06)',
+        backgroundColor: hovered ? 'rgba(245,241,234,0.02)' : 'transparent',
+        transition: 'background-color 180ms',
+      }}
+    >
+      {/* Name */}
+      <td style={{ padding: '14px 16px', fontSize: 13, color: '#f5f1ea', fontWeight: 500 }}>
+        {cat.name}
+      </td>
+
+      {/* Slug */}
+      <td style={{ padding: '14px 16px', fontSize: 13, color: '#c9c0a8', fontFamily: 'monospace' }}>
+        {cat.slug}
+      </td>
+
+      {/* Icon name */}
+      <td style={{ padding: '14px 16px', fontSize: 13, color: '#c9a96e', fontFamily: 'monospace' }}>
+        {cat.icon_name}
+      </td>
+
+      {/* Display order */}
+      <td style={{ padding: '14px 16px', fontSize: 13, color: '#c9c0a8' }}>
+        {cat.display_order}
+      </td>
+
+      {/* is_active toggle */}
+      <td style={{ padding: '14px 16px' }}>
+        <button
+          id={`toggle-active-${cat.id}`}
+          role="switch"
+          aria-checked={cat.is_active}
+          onClick={onToggle}
+          style={{
+            position: 'relative',
+            display: 'inline-block',
+            width: 36,
+            height: 20,
+            borderRadius: 9999,
+            border: 'none',
+            cursor: 'pointer',
+            background: cat.is_active ? '#c9a96e' : 'rgba(245,241,234,0.08)',
+            transition: 'background 200ms',
+            flexShrink: 0,
+          }}
+        >
+          <span
+            style={{
+              position: 'absolute',
+              top: 2,
+              left: cat.is_active ? 18 : 2,
+              width: 16,
+              height: 16,
+              borderRadius: '50%',
+              background: '#fff',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.4)',
+              transition: 'left 200ms',
+            }}
+          />
+        </button>
+      </td>
+
+      {/* Actions */}
+      <td style={{ padding: '14px 16px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          <button
+            id={`edit-category-${cat.id}`}
+            onClick={onEdit}
+            style={{
+              background: 'none',
+              border: 'none',
+              padding: 0,
+              fontSize: 13,
+              color: '#c9a96e',
+              cursor: 'pointer',
+              fontFamily: "'Inter', system-ui, sans-serif",
+            }}
+          >
+            Edit
+          </button>
+          <button
+            id={`delete-category-${cat.id}`}
+            onClick={onDelete}
+            style={{
+              background: 'none',
+              border: 'none',
+              padding: 0,
+              fontSize: 13,
+              color: '#a1352a',
+              cursor: 'pointer',
+              fontFamily: "'Inter', system-ui, sans-serif",
+            }}
+          >
+            Delete
+          </button>
+        </div>
+      </td>
+    </tr>
+  );
+}
+
 // ─── Main component ───────────────────────────────────────────────────────────
 
 export default function CategoriesClient({
@@ -360,24 +477,58 @@ export default function CategoriesClient({
   // ─────────────────────────────────────────────────────────────────────────
 
   return (
-    <div className="min-h-screen bg-[#0f0f0f] px-6 py-8 font-sans">
+    <div style={{ fontFamily: "'Inter', system-ui, sans-serif", color: '#f5f1ea' }}>
       {/* ── Page header ── */}
-      <div className="mb-8 flex items-end justify-between">
+      <div
+        style={{
+          marginBottom: 32,
+          display: 'flex',
+          alignItems: 'flex-end',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: 16,
+        }}
+      >
         <div>
           <h1
-            className="text-3xl font-bold text-[#f5f1ea]"
-            style={{ fontFamily: "'Playfair Display', serif" }}
+            style={{
+              fontFamily: "'Playfair Display', Georgia, serif",
+              fontSize: 30,
+              fontWeight: 700,
+              color: '#f5f1ea',
+              margin: 0,
+            }}
           >
             Categories
           </h1>
-          <p className="mt-1 text-sm text-[#666]">
+          <p
+            style={{
+              fontFamily: "'Inter', system-ui, sans-serif",
+              fontSize: 14,
+              color: '#8a8a8a',
+              marginTop: 6,
+              marginBottom: 0,
+            }}
+          >
             Manage catalog categories visible to B2B buyers.
           </p>
         </div>
         <button
           id="add-category-btn"
           onClick={openAddModal}
-          className="rounded bg-[#c9a96e] px-5 py-2.5 text-sm font-bold uppercase tracking-widest text-[#0f0f0f] transition-all hover:bg-[#b8935d] active:scale-[0.97] cursor-pointer"
+          style={{
+            background: '#c9a96e',
+            color: '#0f0f0f',
+            border: 'none',
+            borderRadius: 6,
+            padding: '10px 20px',
+            fontSize: 12,
+            fontWeight: 700,
+            letterSpacing: '0.14em',
+            textTransform: 'uppercase',
+            cursor: 'pointer',
+            fontFamily: "'Inter', system-ui, sans-serif",
+          }}
         >
           + Add Category
         </button>
@@ -385,28 +536,72 @@ export default function CategoriesClient({
 
       {/* ── Fetch error banner ── */}
       {fetchError && (
-        <div className="mb-6 rounded border border-[rgba(161,53,42,0.3)] bg-[rgba(161,53,42,0.1)] px-4 py-3 text-sm text-[#e57373]">
+        <div
+          style={{
+            marginBottom: 24,
+            padding: '12px 16px',
+            borderRadius: 8,
+            border: '1px solid rgba(161,53,42,0.3)',
+            background: 'rgba(161,53,42,0.1)',
+            fontSize: 13,
+            color: '#e57373',
+            fontFamily: "'Inter', system-ui, sans-serif",
+          }}
+        >
           Failed to load categories: {fetchError}
         </div>
       )}
 
       {/* ── Loading indicator ── */}
       {isFetching && (
-        <div className="mb-4 text-xs text-[#555] tracking-wider uppercase">
+        <div
+          style={{
+            marginBottom: 16,
+            fontSize: 10,
+            color: '#555',
+            letterSpacing: '0.18em',
+            textTransform: 'uppercase',
+            fontFamily: "'Inter', system-ui, sans-serif",
+          }}
+        >
           Refreshing…
         </div>
       )}
 
       {/* ── Table ── */}
-      <div className="overflow-x-auto rounded-lg border border-[rgba(245,241,234,0.08)]">
-        <table className="w-full text-left text-sm">
+      <div
+        style={{
+          overflowX: 'auto',
+          borderRadius: 8,
+          border: '1px solid rgba(245,241,234,0.08)',
+          marginTop: 24,
+        }}
+      >
+        <table
+          style={{
+            width: '100%',
+            borderCollapse: 'collapse',
+            textAlign: 'left',
+            fontSize: 13,
+            fontFamily: "'Inter', system-ui, sans-serif",
+          }}
+        >
           <thead>
-            <tr className="border-b border-[rgba(245,241,234,0.08)] bg-[#141414]">
+            <tr style={{ background: '#141414', borderBottom: '1px solid rgba(245,241,234,0.08)' }}>
               {['Name', 'Slug', 'Icon', 'Order', 'Active', 'Actions'].map(
                 (h) => (
                   <th
                     key={h}
-                    className="px-5 py-3.5 text-[0.7rem] font-semibold uppercase tracking-widest text-[#666]"
+                    style={{
+                      textAlign: 'left',
+                      padding: '12px 16px',
+                      fontSize: 10,
+                      fontWeight: 500,
+                      letterSpacing: '0.18em',
+                      textTransform: 'uppercase',
+                      color: '#8a8a8a',
+                      borderBottom: '1px solid rgba(245,241,234,0.08)',
+                    }}
                   >
                     {h}
                   </th>
@@ -419,76 +614,26 @@ export default function CategoriesClient({
               <tr>
                 <td
                   colSpan={6}
-                  className="px-5 py-12 text-center text-sm text-[#444]"
+                  style={{
+                    padding: '48px 20px',
+                    textAlign: 'center',
+                    fontSize: 13,
+                    color: '#555',
+                    fontFamily: "'Inter', system-ui, sans-serif",
+                  }}
                 >
                   No categories yet. Add your first one.
                 </td>
               </tr>
             ) : (
               categories.map((cat) => (
-                <tr
+                <TableRow
                   key={cat.id}
-                  className="border-b border-[rgba(245,241,234,0.06)] transition-colors hover:border-[rgba(201,169,110,0.2)] hover:bg-[rgba(201,169,110,0.03)]"
-                >
-                  {/* Name */}
-                  <td className="px-5 py-4 font-medium text-[#f5f1ea]">
-                    {cat.name}
-                  </td>
-
-                  {/* Slug */}
-                  <td className="px-5 py-4 font-mono text-[0.8rem] text-[#8a8a8a]">
-                    {cat.slug}
-                  </td>
-
-                  {/* Icon name */}
-                  <td className="px-5 py-4 font-mono text-[0.8rem] text-[#c9a96e]">
-                    {cat.icon_name}
-                  </td>
-
-                  {/* Display order */}
-                  <td className="px-5 py-4 text-[#888]">{cat.display_order}</td>
-
-                  {/* is_active toggle */}
-                  <td className="px-5 py-4">
-                    <button
-                      id={`toggle-active-${cat.id}`}
-                      role="switch"
-                      aria-checked={cat.is_active}
-                      onClick={() => handleToggleActive(cat)}
-                      className={`relative h-5 w-9 rounded-full transition-colors focus:outline-none cursor-pointer ${
-                        cat.is_active
-                          ? 'bg-[#c9a96e]'
-                          : 'bg-[rgba(245,241,234,0.08)]'
-                      }`}
-                    >
-                      <span
-                        className={`absolute top-0.5 left-0.5 h-4 w-4 rounded-full bg-white shadow transition-transform ${
-                          cat.is_active ? 'translate-x-4' : 'translate-x-0'
-                        }`}
-                      />
-                    </button>
-                  </td>
-
-                  {/* Actions */}
-                  <td className="px-5 py-4">
-                    <div className="flex items-center gap-4">
-                      <button
-                        id={`edit-category-${cat.id}`}
-                        onClick={() => openEditModal(cat)}
-                        className="text-[0.8rem] text-[#c9a96e] transition-colors hover:text-[#e0c080] cursor-pointer"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        id={`delete-category-${cat.id}`}
-                        onClick={() => setDeleteTargetId(cat.id)}
-                        className="text-[0.8rem] text-[#a1352a] transition-colors hover:text-[#c94a3a] cursor-pointer"
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </td>
-                </tr>
+                  cat={cat}
+                  onEdit={() => openEditModal(cat)}
+                  onDelete={() => setDeleteTargetId(cat.id)}
+                  onToggle={() => handleToggleActive(cat)}
+                />
               ))
             )}
           </tbody>

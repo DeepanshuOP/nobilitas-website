@@ -4,7 +4,7 @@ import styles from './WhatsAppFab.module.css';
 export default function WhatsAppFab() {
   return (
     <Link
-      href="https://wa.me/919876543210"
+      href="https://wa.me/919314093160"
       className={styles.waFab}
       aria-label="WhatsApp inquiry"
       target="_blank"

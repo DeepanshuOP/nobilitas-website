@@ -55,7 +55,7 @@ export default function ContactPage() {
     setErrorMsg('');
 
     const supabase = createClient();
-    
+
     let sourceMapped = 'other';
     if (source === 'Google search') sourceMapped = 'google';
     if (source === 'WhatsApp referral') sourceMapped = 'whatsapp_referral';
@@ -198,64 +198,64 @@ export default function ContactPage() {
                   <div className={styles.formFields}>
                     <div className={styles.fieldGroup}>
                       <label>Your name</label>
-                      <input 
-                        type="text" 
-                        placeholder="Full name" 
-                        value={name} 
-                        onChange={(e) => setName(e.target.value)} 
+                      <input
+                        type="text"
+                        placeholder="Full name"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
                         className={styles.inputBase}
                         required
                       />
                     </div>
                     <div className={styles.fieldGroup}>
                       <label>Company</label>
-                      <input 
-                        type="text" 
-                        placeholder="Organisation name" 
-                        value={company} 
-                        onChange={(e) => setCompany(e.target.value)} 
+                      <input
+                        type="text"
+                        placeholder="Organisation name"
+                        value={company}
+                        onChange={(e) => setCompany(e.target.value)}
                         className={styles.inputBase}
                         required
                       />
                     </div>
                     <div className={styles.fieldGroup}>
                       <label>Email address</label>
-                      <input 
-                        type="email" 
-                        placeholder="you@company.com" 
-                        value={email} 
-                        onChange={(e) => setEmail(e.target.value)} 
+                      <input
+                        type="email"
+                        placeholder="you@company.com"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                         className={styles.inputBase}
                         required
                       />
                     </div>
                     <div className={styles.fieldGroup}>
                       <label>Phone / WhatsApp</label>
-                      <input 
-                        type="tel" 
-                        placeholder="+91 98765 43210" 
-                        value={phone} 
-                        onChange={(e) => setPhone(e.target.value)} 
+                      <input
+                        type="tel"
+                        placeholder="+91 93140 93160"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
                         className={styles.inputBase}
                         required
                       />
                     </div>
                     <div className={styles.fieldGroup}>
                       <label>What do you need?</label>
-                      <textarea 
-                        rows={5} 
-                        placeholder="Paste a product list, describe your requirements, or send a photo of your old PO." 
-                        value={message} 
-                        onChange={(e) => setMessage(e.target.value)} 
+                      <textarea
+                        rows={5}
+                        placeholder="Paste a product list, describe your requirements, or send a photo of your old PO."
+                        value={message}
+                        onChange={(e) => setMessage(e.target.value)}
                         className={`${styles.inputBase} ${styles.textarea}`}
                         required
                       />
                     </div>
                     <div className={styles.fieldGroup}>
                       <label>How did you hear about us?</label>
-                      <select 
-                        value={source} 
-                        onChange={(e) => setSource(e.target.value)} 
+                      <select
+                        value={source}
+                        onChange={(e) => setSource(e.target.value)}
                         className={`${styles.inputBase} ${styles.select}`}
                       >
                         <option value="">Select...</option>
@@ -268,9 +268,9 @@ export default function ContactPage() {
                     </div>
                   </div>
 
-                  <button 
+                  <button
                     type="submit"
-                    className="btn btn--dark" 
+                    className="btn btn--dark"
                     style={{ width: '100%', marginTop: '28px', justifyContent: 'center', opacity: submitting ? 0.7 : 1 }}
                     disabled={submitting}
                   >
@@ -295,22 +295,77 @@ export default function ContactPage() {
               our jaipur office.
             </h2>
             <p style={{ fontFamily: 'var(--sans)', fontWeight: 300, fontSize: '15px', lineHeight: '1.8', color: 'var(--fg-2)' }}>
-              {COMPANY.addressLine1}<br/>
-              {COMPANY.addressLine2}, {COMPANY.city}<br/>
+              {COMPANY.addressLine1}<br />
+              {COMPANY.addressLine2}, {COMPANY.city}<br />
               {COMPANY.state}
             </p>
             <p style={{ fontFamily: 'var(--mono)', fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--fg-3)', marginTop: '20px' }}>
-              // Pan-India delivery from Sitapura warehouse
+              // Pan-India delivery from Jaipur
             </p>
           </div>
-          <div className={styles.mapPlaceholder}>
-            <svg viewBox="0 0 24 24">
-              <path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z" />
-              <circle cx="12" cy="9" r="2.5" />
-            </svg>
-            <span style={{ fontFamily: 'var(--mono)', fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fg-3)' }}>
-              // interactive map · coming soon
-            </span>
+          <div className={styles.mapWrapper}>
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d28469.193965532086!2d75.7743146!3d26.8828829!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396db585a4f2490d%3A0x24533d8add4d1375!2sNobilitas%20Ventures%20LLP!5e0!3m2!1sen!2sin!4v1779994250527!5m2!1sen!2sin"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Nobilitas Ventures LLP - Jaipur Office"
+            />
+            <div className={styles.mapActions}>
+              <a
+                href="https://maps.app.goo.gl/zVyAjbQYoVXAYJyZ6"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.mapBtn}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
+                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+                  <circle cx="12" cy="9" r="2.5"/>
+                </svg>
+                Open in Google Maps
+              </a>
+              <a
+                href="https://www.google.com/maps/dir/?api=1&destination_place_id=0x396db585a4f2490d:0x24533d8add4d1375&destination=Nobilitas+Ventures+LLP"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.mapBtn}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
+                  <polygon points="3 11 22 2 13 21 11 13 3 11"/>
+                </svg>
+                Get directions
+              </a>
+              <button
+                className={styles.mapBtn}
+                onClick={() => {
+                  if (navigator.share) {
+                    navigator.share({
+                      title: 'Nobilitas Ventures LLP',
+                      text: 'C 3 & 4, Above Evok Furniture Store, MJRP College Road, Nandpuri, Jaipur 302019',
+                      url: 'https://maps.app.goo.gl/zVyAjbQYoVXAYJyZ6'
+                    })
+                  } else {
+                    navigator.clipboard.writeText('https://maps.app.goo.gl/zVyAjbQYoVXAYJyZ6')
+                    alert('Location link copied to clipboard')
+                  }
+                }}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
+                  <circle cx="18" cy="5" r="3"/>
+                  <circle cx="6" cy="12" r="3"/>
+                  <circle cx="18" cy="19" r="3"/>
+                  <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+                  <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+                </svg>
+                Share address
+              </button>
+            </div>
           </div>
         </div>
       </section>
